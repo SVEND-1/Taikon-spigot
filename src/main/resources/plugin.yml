@@ -1,0 +1,14 @@
+name: Taikon
+version: '${project.version}'
+main: svend.taikon.Taikon
+api-version: '1.17'
+
+depend: [ProtocolLib]
+softdepend: [WorldEdit]
+
+commands:
+  spawn:
+    description: "Телепорт на спавн"
+
+  menu:
+    description: "Можно открыть любое меню"
