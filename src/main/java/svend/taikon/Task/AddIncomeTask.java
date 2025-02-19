@@ -21,5 +21,6 @@ public class AddIncomeTask extends BukkitRunnable {
 
         user.setBalance(user.getBalance() + user.getIncome());
         userDB.update(user);
+
     }
 }

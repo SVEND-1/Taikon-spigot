@@ -13,7 +13,7 @@ public class ToolsMenu extends MenuManager{
 
     @Override
     public String getMenuName() {
-        return "Магазин интрументов";
+        return "Магазин инструментов";
     }
 
     @Override
@@ -23,8 +23,7 @@ public class ToolsMenu extends MenuManager{
 
     @Override
     public void hasdleMenu(InventoryClickEvent e) {
-        if (e.getView().getTitle().equals(getMenuName())) {
-            e.setCancelled(true);
+        if (e.getView().getTitle().equals("Магазин инструментов")) {
 
             Player player = (Player) e.getView().getPlayer();
 
@@ -38,6 +37,8 @@ public class ToolsMenu extends MenuManager{
                 balance -= price;
             }
 
+            player.getInventory().addItem(itemClick);
+            e.setCancelled(true);
         }
     }
 

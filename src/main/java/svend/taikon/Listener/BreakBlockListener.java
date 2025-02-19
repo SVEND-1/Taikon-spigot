@@ -91,37 +91,54 @@ public class BreakBlockListener implements Listener {
 
     private void addResourceToDataBase(BlockBreakEvent e) {
         Player player = e.getPlayer();
+
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        Material breakBlockType = e.getBlock().getType();
+        Material itemInMainHand = itemInHand.getType();
+        int multiplier = getMultiplier(player);
+
         if (itemInHand == null) {
             return;
         }
-        Material itemInMainHand = itemInHand.getType();
-        int multiplier = getMultiplier(player);
-        Resource resource = resourceDB.read(player.getUniqueId());
 
-        if (itemInMainHand == Material.WOODEN_AXE ||
-                itemInMainHand == Material.STONE_AXE ||
-                itemInMainHand == Material.IRON_AXE ||
-                itemInMainHand == Material.DIAMOND_AXE) {
-            resource.setWood(resource.getWood() + multiplier);
-        } else if (itemInMainHand == Material.WOODEN_PICKAXE ||
-                itemInMainHand == Material.STONE_PICKAXE ||
-                itemInMainHand == Material.IRON_PICKAXE ||
-                itemInMainHand == Material.DIAMOND_PICKAXE) {
-            resource.setStone(resource.getStone() + multiplier);
-        } else if (itemInMainHand == Material.WOODEN_SHOVEL ||
-                itemInMainHand == Material.STONE_SHOVEL ||
-                itemInMainHand == Material.IRON_SHOVEL ||
-                itemInMainHand == Material.DIAMOND_SHOVEL) {
-            resource.setSand(resource.getSand() + multiplier);
-        }
-        else if(e.getBlock().getType() == Material.WHITE_TULIP){
-            resource.setFlowers(resource.getFlowers() + 1);
-        }
-        else{
-            player.sendMessage("Вам нужно купить инструменты чтобы получать ресурсы");
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Resource resource = resourceDB.read(player.getUniqueId());
 
-        resourceDB.update(resource);
+                if (breakBlockType == Material.WHITE_TULIP) {
+                    resource.setFlowers(resource.getFlowers() + 1);
+                    resourceDB.update(resource);
+                    return;
+                }
+
+                if (itemInMainHand == Material.WOODEN_AXE ||
+                        itemInMainHand == Material.STONE_AXE ||
+                        itemInMainHand == Material.IRON_AXE ||
+                        itemInMainHand == Material.DIAMOND_AXE) {
+                    if (breakBlockType == Material.OAK_LOG) {
+                        resource.setWood(resource.getWood() + multiplier);
+                    }
+                } else if (itemInMainHand == Material.WOODEN_PICKAXE ||
+                        itemInMainHand == Material.STONE_PICKAXE ||
+                        itemInMainHand == Material.IRON_PICKAXE ||
+                        itemInMainHand == Material.DIAMOND_PICKAXE) {
+                    if (breakBlockType == Material.STONE) {
+                        resource.setStone(resource.getStone() + multiplier);
+                    }
+                } else if (itemInMainHand == Material.WOODEN_SHOVEL ||
+                        itemInMainHand == Material.STONE_SHOVEL ||
+                        itemInMainHand == Material.IRON_SHOVEL ||
+                        itemInMainHand == Material.DIAMOND_SHOVEL) {
+                    if (breakBlockType == Material.SAND) {
+                        resource.setSand(resource.getSand() + multiplier);
+                    }
+                } else {
+                    player.sendMessage("Вам нужно купить инструменты чтобы получать ресурсы");
+                }
+
+                resourceDB.update(resource);
+            }
+        }.runTaskAsynchronously(Taikon.getPlugin());
     }
 }

@@ -7,10 +7,11 @@ import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import svend.taikon.DataBase.DAO;
 import svend.taikon.Model.Resource;
-import svend.taikon.Model.User;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -22,58 +23,51 @@ public class ResourceDB implements DAO<Resource, UUID> {
     }
 
     @Override
-    public boolean insert(Resource model) {
-        Document doc = new Document("flower", model.getFlowers())
-                .append("wood", model.getWood())
-                .append("stone", model.getStone())
-                .append("sand", model.getSand())
-                .append("userId", model.getUserId().toString());
-
-        resourceCollection.insertOne(doc);
+    public boolean insert(Resource resource) {
+        resourceCollection.insertOne(createResourceDocument(resource));
         return true;
     }
 
     @Override
     public Resource read(UUID userId) {
         Document doc = resourceCollection.find(eq("userId", userId.toString())).first();
-        if (doc != null) {
-            return mapDocumentToUser(doc);
-        }
-        return null;
+        return doc != null ? mapDocumentToResource(doc) : null;
     }
-    @Override
-    public boolean update(Resource model) {
-        Document doc = new Document("flower", model.getFlowers())
-                .append("wood", model.getWood())
-                .append("stone", model.getStone())
-                .append("sand", model.getSand())
-                .append("userId", model.getUserId().toString());
 
-        // Обновляем документ
-        UpdateResult result = resourceCollection.replaceOne(eq("userId", model.getUserId().toString()), doc);
+    @Override
+    public boolean update(Resource resource) {
+        UpdateResult result = resourceCollection.replaceOne(eq("userId", resource.getUserId().toString()), createResourceDocument(resource));
         return result.getModifiedCount() > 0;
     }
 
     @Override
-    public boolean delete(Resource model) {
-        DeleteResult result = resourceCollection.deleteOne(eq("userId", model.getUserId().toString()));
+    public boolean delete(Resource resource) {
+        DeleteResult result = resourceCollection.deleteOne(eq("userId", resource.getUserId().toString()));
         return result.getDeletedCount() > 0;
     }
 
     @Override
-    public List getAll() {
-        return null;
+    public List<Resource> getAll() {
+        return StreamSupport.stream(resourceCollection.find().spliterator(), false)
+                .map(this::mapDocumentToResource)
+                .collect(Collectors.toList());
     }
 
-    @Override
-    public Resource mapDocumentToUser(Document doc) {
+    private Document createResourceDocument(Resource resource) {
+        return new Document("flower", resource.getFlowers())
+                .append("wood", resource.getWood())
+                .append("stone", resource.getStone())
+                .append("sand", resource.getSand())
+                .append("userId", resource.getUserId().toString());
+    }
+
+    private Resource mapDocumentToResource(Document doc) {
         Resource resource = new Resource();
         resource.setFlowers(doc.getInteger("flower"));
         resource.setWood(doc.getInteger("wood"));
         resource.setStone(doc.getInteger("stone"));
         resource.setSand(doc.getInteger("sand"));
         resource.setUserId(UUID.fromString(doc.getString("userId")));
-
         return resource;
     }
 }
