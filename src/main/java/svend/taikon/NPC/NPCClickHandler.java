@@ -9,6 +9,8 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import svend.taikon.Menu.DonatMenu;
+import svend.taikon.Menu.SellResourceMenu;
 import svend.taikon.Menu.ToolsMenu;
 import svend.taikon.Taikon;
 
@@ -45,6 +47,14 @@ public class NPCClickHandler {
                                 case "Четвертый":
                                     ToolsMenu menu = new ToolsMenu(player);
                                     menu.open();
+                                    break;
+                                case "Донат":
+                                    DonatMenu donatMenu = new DonatMenu(player);
+                                    donatMenu.open();
+                                    break;
+                                case "Продажа ресурсов":
+                                    SellResourceMenu sellResourceMenu = new SellResourceMenu(player);
+                                    sellResourceMenu.open();
                                     break;
                             }
                         }

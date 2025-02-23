@@ -8,15 +8,15 @@ import org.bukkit.inventory.InventoryHolder;
 
 public abstract class MenuManager implements InventoryHolder {
     protected Inventory inventory;
-    protected Player _player;
+    protected Player player;
 
     public MenuManager(Player player){
-        this._player = player;
+        this.player = player;
     }
 
     public abstract String getMenuName();
     public abstract int getSlots();
-    public abstract void hasdleMenu(InventoryClickEvent e);
+    public abstract void handleMenu(InventoryClickEvent e);
     public abstract void setMenuItems();
     @Override
     public Inventory getInventory() {
@@ -29,7 +29,7 @@ public abstract class MenuManager implements InventoryHolder {
 
         this.setMenuItems();//тут типо положили вещи
 
-        _player.openInventory(inventory);
+        player.openInventory(inventory);
 
     }
 }

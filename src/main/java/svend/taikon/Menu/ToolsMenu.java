@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class ToolsMenu extends MenuManager{
+
     public ToolsMenu(Player player) {
         super(player);
     }
@@ -22,8 +23,11 @@ public class ToolsMenu extends MenuManager{
     }
 
     @Override
-    public void hasdleMenu(InventoryClickEvent e) {
-        if (e.getView().getTitle().equals("Магазин инструментов")) {
+    public void handleMenu(InventoryClickEvent e)  {
+        if (e.getView().getTitle().equals(getMenuName())) {
+            if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) {
+                return;
+            }
 
             Player player = (Player) e.getView().getPlayer();
 

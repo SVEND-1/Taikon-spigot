@@ -1,5 +1,6 @@
 package svend.taikon;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import svend.taikon.Command.OpenMenuCommand;
 import svend.taikon.Command.SpawnCommand;
@@ -42,6 +43,8 @@ public final class Taikon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
         getServer().getPluginManager().registerEvents(new FoodLevelListener(), this);
         getServer().getPluginManager().registerEvents(new BreakingToolsListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
+
 
 
         this.getCommand("spawn").setExecutor(new SpawnCommand());
@@ -53,4 +56,7 @@ public final class Taikon extends JavaPlugin {
         connectToMongoDB.close();
         HologramTop.delete();
     }
+
+
+
 }

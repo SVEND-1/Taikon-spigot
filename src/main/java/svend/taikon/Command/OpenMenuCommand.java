@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import svend.taikon.Menu.ToolsMenu;
+import svend.taikon.Taikon;
 
 public class OpenMenuCommand implements CommandExecutor {
     @Override
