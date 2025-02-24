@@ -5,11 +5,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+import svend.taikon.DataBase.ConnectToMongoDB;
+import svend.taikon.DataBase.ModelDAO.ResourceDB;
+import svend.taikon.DataBase.ModelDAO.UserDB;
+import svend.taikon.Model.User;
+import svend.taikon.Taikon;
 
-public class ToolsMenu extends MenuManager{
+public class ToolsMenu extends MenuManager {
+
+    private final UserDB userDB;
+    private final ConnectToMongoDB database;
 
     public ToolsMenu(Player player) {
         super(player);
+        this.database = new ConnectToMongoDB();
+        this.userDB = new UserDB(database.getDatabase());
     }
 
     @Override
@@ -23,86 +34,78 @@ public class ToolsMenu extends MenuManager{
     }
 
     @Override
-    public void handleMenu(InventoryClickEvent e)  {
-        if (e.getView().getTitle().equals(getMenuName())) {
-            if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) {
-                return;
-            }
+    public void handleMenu(InventoryClickEvent e) {
+        e.setCancelled(true);
 
-            Player player = (Player) e.getView().getPlayer();
+        ItemStack itemClick = e.getCurrentItem();
 
-            ItemStack itemClick = e.getCurrentItem();
-
-            int price = Integer.parseInt(itemClick.getItemMeta().getDisplayName());
-            int balance = 0;//Типо баланс игрока
-
-            if(balance >= price){
-                player.getInventory().addItem(itemClick);
-                balance -= price;
-            }
-
-            player.getInventory().addItem(itemClick);
-            e.setCancelled(true);
+        if (itemClick == null || !itemClick.hasItemMeta() || !itemClick.getItemMeta().hasDisplayName()) {
+            return;
         }
+        if (player.getInventory().containsAtLeast(itemClick, 1)) {
+            player.sendMessage("У вас уже есть этот предмет.");
+            return;
+        }
+        int price = Integer.parseInt(itemClick.getItemMeta().getDisplayName());
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                User user = userDB.read(player.getUniqueId());
+
+                if (user.getBalance() >= price) {
+                    user.setBalance(user.getBalance() - price);
+                    userDB.update(user);
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            player.getInventory().addItem(itemClick);
+                        }
+                    }.runTask(Taikon.getPlugin());
+                } else {
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            player.sendMessage("Недостаточно средств для покупки.");
+                        }
+                    }.runTask(Taikon.getPlugin());
+                }
+            }
+        }.runTaskAsynchronously(Taikon.getPlugin());
     }
 
     @Override
     public void setMenuItems() {
-        ItemStack woodenAxe = new ItemStack(Material.WOODEN_AXE);
-        ItemMeta woodenAxeMeta = woodenAxe.getItemMeta();
-        woodenAxeMeta.setDisplayName("10");
-        woodenAxe.setItemMeta(woodenAxeMeta);
+        ItemStack woodenAxe = createMenuItem(Material.WOODEN_AXE, "10");
+        ItemStack stoneAxe = createMenuItem(Material.STONE_AXE, "30");
+        ItemStack ironAxe = createMenuItem(Material.IRON_AXE, "70");
 
-        ItemStack stoneAxe = new ItemStack(Material.STONE_AXE);
-        ItemMeta stoneAxeMeta = stoneAxe.getItemMeta();
-        stoneAxeMeta.setDisplayName("30");
-        stoneAxe.setItemMeta(stoneAxeMeta);
+        ItemStack woodenPickaxe = createMenuItem(Material.WOODEN_PICKAXE, "10");
+        ItemStack stonePickaxe = createMenuItem(Material.STONE_PICKAXE, "30");
+        ItemStack ironPickaxe = createMenuItem(Material.IRON_PICKAXE, "70");
 
-        ItemStack ironAxe = new ItemStack(Material.IRON_AXE);
-        ItemMeta ironAxeMeta = ironAxe.getItemMeta();
-        ironAxeMeta.setDisplayName("70");
-        ironAxe.setItemMeta(ironAxeMeta);
+        ItemStack woodenShovel = createMenuItem(Material.WOODEN_SHOVEL, "10");
+        ItemStack stoneShovel = createMenuItem(Material.STONE_SHOVEL, "30");
+        ItemStack ironShovel = createMenuItem(Material.IRON_SHOVEL, "70");
 
-        ItemStack woodenPickaxe = new ItemStack(Material.WOODEN_PICKAXE);
-        ItemMeta woodenPickaxeMeta = woodenPickaxe.getItemMeta();
-        woodenPickaxeMeta.setDisplayName("10");
-        woodenPickaxe.setItemMeta(woodenPickaxeMeta);
+        inventory.setItem(11, woodenAxe);
+        inventory.setItem(13, woodenPickaxe);
+        inventory.setItem(15, woodenShovel);
 
-        ItemStack stonePickaxe = new ItemStack(Material.STONE_PICKAXE);
-        ItemMeta stonePickaxeMeta = stonePickaxe.getItemMeta();
-        stonePickaxeMeta.setDisplayName("30");
-        stonePickaxe.setItemMeta(stonePickaxeMeta);
+        inventory.setItem(20, stoneAxe);
+        inventory.setItem(22, stonePickaxe);
+        inventory.setItem(24, stoneShovel);
 
-        ItemStack ironPickaxe = new ItemStack(Material.IRON_PICKAXE);
-        ItemMeta ironPickaxeMeta = ironPickaxe.getItemMeta();
-        ironPickaxeMeta.setDisplayName("70");
-        ironPickaxe.setItemMeta(ironPickaxeMeta);
+        inventory.setItem(29, ironAxe);
+        inventory.setItem(31, ironPickaxe);
+        inventory.setItem(33, ironShovel);
+    }
 
-        ItemStack woodenShovel = new ItemStack(Material.WOODEN_SHOVEL);
-        ItemMeta woodenShovelMeta = woodenShovel.getItemMeta();
-        woodenShovelMeta.setDisplayName("10");
-        woodenShovel.setItemMeta(woodenShovelMeta);
-
-        ItemStack stoneShovel = new ItemStack(Material.STONE_SHOVEL);
-        ItemMeta stoneShovelMeta = stoneShovel.getItemMeta();
-        stoneShovelMeta.setDisplayName("30");
-        stoneShovel.setItemMeta(stoneShovelMeta);
-
-        ItemStack ironShovel  = new ItemStack(Material.IRON_SHOVEL);
-        ItemMeta ironShovelMeta = ironShovel.getItemMeta();
-        ironShovelMeta.setDisplayName("70");
-        ironShovel.setItemMeta(ironShovelMeta);
-
-        inventory.setItem(11,woodenAxe);
-        inventory.setItem(13,woodenPickaxe);
-        inventory.setItem(15,woodenShovel);
-
-        inventory.setItem(20,stoneAxe);
-        inventory.setItem(22,stonePickaxe);
-        inventory.setItem(24,stoneShovel);
-
-        inventory.setItem(29,ironAxe);
-        inventory.setItem(31,ironPickaxe);
-        inventory.setItem(33,ironShovel);
+    private ItemStack createMenuItem(Material material, String name) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+        item.setItemMeta(meta);
+        return item;
     }
 }

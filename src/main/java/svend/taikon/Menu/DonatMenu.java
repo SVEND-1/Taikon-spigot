@@ -1,11 +1,24 @@
 package svend.taikon.Menu;
 
+import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+import svend.taikon.DataBase.ConnectToMongoDB;
+import svend.taikon.DataBase.ModelDAO.UserDB;
+import svend.taikon.Model.User;
+import svend.taikon.Taikon;
 
 public class DonatMenu extends MenuManager{
+    private final UserDB userDB;
+    private final ConnectToMongoDB database;
     public DonatMenu(Player player) {
         super(player);
+        this.database = new ConnectToMongoDB();
+        this.userDB = new UserDB(database.getDatabase());
     }
 
     @Override
@@ -19,12 +32,103 @@ public class DonatMenu extends MenuManager{
     }
 
     @Override
-    public void handleMenu(InventoryClickEvent e){
+    public void handleMenu(InventoryClickEvent e) {
+        e.setCancelled(true);
 
+        if (!e.getView().getTitle().equals(getMenuName())) {
+            return;
+        }
+
+        Player player = (Player) e.getWhoClicked();
+        Material clickedItemType = e.getCurrentItem() != null ? e.getCurrentItem().getType() : null;
+
+        if (clickedItemType == null) {
+            return;
+        }
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                User user = userDB.read(player.getUniqueId());
+
+                switch (clickedItemType) {
+                    case FEATHER:
+                        Fly(player, user);
+                        break;
+                    case DIAMOND_AXE:
+                    case DIAMOND_PICKAXE:
+                    case DIAMOND_SHOVEL:
+                        Tools(player, user, clickedItemType);
+                        break;
+                    case GOLD_ORE:
+                        break;
+                }
+
+                userDB.update(user);
+            }
+        }.runTaskAsynchronously(Taikon.getPlugin());
+    }
+
+    private void Fly(Player player, User user) {
+        if (user.getBalance() >= 100) {
+            if (!player.getAllowFlight()) {
+                player.setAllowFlight(true);
+                player.closeInventory();
+                player.sendMessage("Полет активирован!");
+
+                user.setBalance(user.getBalance() - 100);
+            } else {
+                player.sendMessage("У вас уже есть полет");
+            }
+        } else {
+            player.sendMessage("Недостаточно средств");
+        }
+    }
+
+    private void Tools(Player player, User user, Material clickedItemType) {
+        if (user.getBalance() >= 150) {
+            ItemStack itemToCheck = new ItemStack(clickedItemType);
+            ItemStack itemToAdd = new ItemStack(clickedItemType);
+
+            if (!player.getInventory().containsAtLeast(itemToCheck, 1)) {
+                player.getInventory().addItem(itemToAdd);
+                player.sendMessage("Вы успешно купили предмет!");
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        user.setBalance(user.getBalance() - 150);
+                        userDB.update(user);
+                    }
+                }.runTaskAsynchronously(Taikon.getPlugin());
+            } else {
+                player.sendMessage("У вас уже куплен этот предмет");
+            }
+        } else {
+            player.sendMessage("Недостаточно средств");
+        }
     }
 
     @Override
     public void setMenuItems() {
+        ItemStack fly = createMenuItem(Material.FEATHER,"Полет");
+        ItemStack boost = createMenuItem(Material.GOLD_ORE,"Бустер х2");
+        ItemStack diamondAxe = createMenuItem(Material.DIAMOND_AXE,"Алмазный топор");
+        ItemStack diamondPickaxe = createMenuItem(Material.DIAMOND_PICKAXE,"Алмазная кирка");
+        ItemStack diamondShovel = createMenuItem(Material.DIAMOND_SHOVEL,"Алмазная лопата");
 
+        inventory.setItem(10,fly);
+        inventory.setItem(12,boost);
+        inventory.setItem(14,diamondAxe);
+        inventory.setItem(15,diamondPickaxe);
+        inventory.setItem(16,diamondShovel);
+    }
+
+    private ItemStack createMenuItem(Material material, String name) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+        item.setItemMeta(meta);
+        return item;
     }
 }

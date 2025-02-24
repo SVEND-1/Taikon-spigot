@@ -36,7 +36,7 @@ public final class Taikon extends JavaPlugin {
         NPCCreate.Create();
         NPCClickHandler.registerClickHandler(this);
         getServer().getPluginManager().registerEvents(new NPCMovementListener(), this);
-
+        getServer().getPluginManager().registerEvents(new PlayerDropItemListener(), this);
         getServer().getPluginManager().registerEvents(new ScoreboardView(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(activeTasks), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(activeTasks), this);
@@ -44,7 +44,6 @@ public final class Taikon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FoodLevelListener(), this);
         getServer().getPluginManager().registerEvents(new BreakingToolsListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
-
 
 
         this.getCommand("spawn").setExecutor(new SpawnCommand());
@@ -56,7 +55,5 @@ public final class Taikon extends JavaPlugin {
         connectToMongoDB.close();
         HologramTop.delete();
     }
-
-
 
 }

@@ -101,14 +101,9 @@ public class SellResourceMenu extends MenuManager {
     }
 
     private void sellResource(Resource resource, User user, int amount, Consumer<Resource> resetResource) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                user.setBalance(user.getBalance() + amount);
-                resetResource.accept(resource);
-                userDB.update(user);
-                resourceDB.update(resource);
-            }
-        }.runTaskAsynchronously(Taikon.getPlugin());
+        user.setBalance(user.getBalance() + amount);
+        resetResource.accept(resource);
+        userDB.update(user);
+        resourceDB.update(resource);
     }
 }
