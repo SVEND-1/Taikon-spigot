@@ -9,6 +9,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import svend.taikon.Menu.BakeryMenu;
 import svend.taikon.Menu.DonatMenu;
 import svend.taikon.Menu.SellResourceMenu;
 import svend.taikon.Menu.ToolsMenu;
@@ -39,6 +40,8 @@ public class NPCClickHandler {
                         public void run() {
                             switch (npcName){
                                 case "Первый":
+                                    BakeryMenu bakeryMenu = new BakeryMenu(player);
+                                    bakeryMenu.open();
                                     break;
                                 case "Второй":
                                     break;

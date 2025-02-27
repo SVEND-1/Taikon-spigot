@@ -8,8 +8,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
+import svend.taikon.DataBase.ModelDAO.BakeryDB;
 import svend.taikon.DataBase.ModelDAO.ResourceDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
+import svend.taikon.Model.Bakery;
 import svend.taikon.Model.Resource;
 import svend.taikon.Model.User;
 import svend.taikon.NPC.NPCCreate;
@@ -22,12 +24,14 @@ import java.util.UUID;
 public class PlayerJoinListener implements Listener {
     private final UserDB userDB;
     private final ResourceDB resourceDB;
+    private final BakeryDB bakeryDB;
     private final HashMap<UUID, AddIncomeTask> activeTasks;
 
     public PlayerJoinListener(HashMap<UUID, AddIncomeTask> activeTasks) {
         ConnectToMongoDB database = new ConnectToMongoDB();
         this.userDB = new UserDB(database.getDatabase());
         this.resourceDB = new ResourceDB(database.getDatabase());
+        this.bakeryDB = new BakeryDB(database.getDatabase());
         this.activeTasks = activeTasks;
     }
 
@@ -62,6 +66,9 @@ public class PlayerJoinListener implements Listener {
 
                     Resource resource = new Resource(0, 0, 0, 0, player.getUniqueId());
                     resourceDB.insert(resource);
+
+                    Bakery bakery = new Bakery("Пекарня",75,1,1,player.getUniqueId());
+                    bakeryDB.insert(bakery);
                 }
             }
         }.runTaskAsynchronously(Taikon.getPlugin());

@@ -7,7 +7,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class MenuUtils {
     public static void ItemProfitableBuildings(Inventory inventory){
-        ItemStack buy = createMenuItem(Material.GRAY_STAINED_GLASS,"Купить");
+        ItemStack buy = createMenuItem(Material.GREEN_STAINED_GLASS,"Купить");
         ItemStack exit = createMenuItem(Material.RED_STAINED_GLASS,"Выйти");
 
         inventory.setItem(2,buy);
