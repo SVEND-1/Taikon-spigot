@@ -1,6 +1,7 @@
 package svend.taikon.DataBase.ModelDAO;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -8,6 +9,7 @@ import org.bson.Document;
 import svend.taikon.DataBase.DAO;
 import svend.taikon.Model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -49,7 +51,7 @@ public class UserDB implements DAO<User, UUID> {
     @Override
     public List<User> getAll() {
         return StreamSupport.stream(userCollection.find().spliterator(), false)
-                .map(UserDB::mapDocumentToUser)
+                .map(this::mapDocumentToUser)
                 .collect(Collectors.toList());
     }
 
@@ -57,16 +59,18 @@ public class UserDB implements DAO<User, UUID> {
         return new Document("_id", user.getId().toString())
                 .append("name", user.getName())
                 .append("income", user.getIncome())
-                .append("balance", user.getBalance());
+                .append("balance", user.getBalance())
+                .append("incomeMultiplier", user.getIncomeMultiplier());
     }
 
 
-    public static User mapDocumentToUser(Document doc) {
+    public User mapDocumentToUser(Document doc) {
         return new User(
                 UUID.fromString(doc.getString("_id")),
                 doc.getString("name"),
                 doc.getLong("income"),
-                doc.getLong("balance")
+                doc.getLong("balance"),
+                doc.getDouble("incomeMultiplier")
         );
     }
 }

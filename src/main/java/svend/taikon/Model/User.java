@@ -9,17 +9,29 @@ public class User {
     private String name;
     private long income;
     private long balance;
+    private double incomeMultiplier;
 
     public User() {
     }
 
-    public User(UUID id, String name, long income, long balance) {
+    public User(UUID id, String name, long income, long balance,double incomeMultiplier) {
         this.id = id;
         this.name = name;
         this.income = income;
         this.balance = balance;
+        this.incomeMultiplier = incomeMultiplier;
+    }
+    public double getIncomeMultiplier() {
+        return incomeMultiplier;
     }
 
+    public void setIncomeMultiplier(double incomeMultiplier) {
+        this.incomeMultiplier = incomeMultiplier;
+    }
+
+    public long getActualIncome() {
+        return (long) (income * incomeMultiplier); // Возвращает доход с учетом модификатора
+    }
     public UUID getId() {
         return id;
     }

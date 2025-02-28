@@ -12,6 +12,7 @@ import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.Model.Resource;
 import svend.taikon.Model.User;
 import svend.taikon.Taikon;
+import svend.taikon.Utility.MenuUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,10 +82,10 @@ public class SellResourceMenu extends MenuManager {
 
     @Override
     public void setMenuItems() {
-        ItemStack whiteTulip = createMenuItem(Material.WHITE_TULIP, "1");
-        ItemStack oakLog = createMenuItem(Material.OAK_LOG, "5");
-        ItemStack stone = createMenuItem(Material.STONE, "10");
-        ItemStack sand = createMenuItem(Material.SAND, "15");
+        ItemStack whiteTulip = MenuUtils.createMenuItem(Material.WHITE_TULIP, "1");
+        ItemStack oakLog = MenuUtils.createMenuItem(Material.OAK_LOG, "5");
+        ItemStack stone = MenuUtils.createMenuItem(Material.STONE, "10");
+        ItemStack sand = MenuUtils.createMenuItem(Material.SAND, "15");
 
         inventory.setItem(10, whiteTulip);
         inventory.setItem(12, oakLog);
@@ -92,13 +93,13 @@ public class SellResourceMenu extends MenuManager {
         inventory.setItem(16, sand);
     }
 
-    private ItemStack createMenuItem(Material material, String name) {
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(name);
-        item.setItemMeta(meta);
-        return item;
-    }
+//    private ItemStack createMenuItem(Material material, String name) {
+//        ItemStack item = new ItemStack(material);
+//        ItemMeta meta = item.getItemMeta();
+//        meta.setDisplayName(name);
+//        item.setItemMeta(meta);
+//        return item;
+//    }
 
     private void sellResource(Resource resource, User user, int amount, Consumer<Resource> resetResource) {
         user.setBalance(user.getBalance() + amount);

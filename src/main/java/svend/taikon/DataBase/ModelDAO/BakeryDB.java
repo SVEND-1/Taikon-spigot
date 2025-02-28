@@ -6,7 +6,8 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import svend.taikon.DataBase.DAO;
-import svend.taikon.Model.Bakery;
+import svend.taikon.Model.Buildings.Bakery;
+import svend.taikon.Model.Buildings.Building;
 
 import java.util.List;
 import java.util.UUID;

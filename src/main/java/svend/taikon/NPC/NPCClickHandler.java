@@ -9,7 +9,9 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import svend.taikon.Menu.BakeryMenu;
+import svend.taikon.Menu.BuildingsMenu.BakeryMenu;
+import svend.taikon.Menu.BuildingsMenu.GardenMenu;
+import svend.taikon.Menu.BuildingsMenu.RestaurantMenu;
 import svend.taikon.Menu.DonatMenu;
 import svend.taikon.Menu.SellResourceMenu;
 import svend.taikon.Menu.ToolsMenu;
@@ -24,28 +26,29 @@ public class NPCClickHandler {
             @Override
             public void onPacketReceiving(PacketEvent event) {
                 PacketContainer packet = event.getPacket();
-                Player player = event.getPlayer(); // Получаем текущего игрока
+                Player player = event.getPlayer();
 
-                // Получаем ID сущности, с которой взаимодействовали
                 int entityId = packet.getIntegers().read(0);
 
-                // Получаем тип взаимодействия (правая/левая кнопка мыши)
                 EnumWrappers.EntityUseAction action = packet.getEnumEntityUseActions().read(0).getAction();
 
-                // Проверяем, является ли сущность NPC
                 String npcName = NPCFactory.getNPCName(entityId);
                 if (npcName != null) {
                     getServer().getScheduler().runTask(Taikon.getPlugin(), new Runnable() {
                         @Override
                         public void run() {
                             switch (npcName){
-                                case "Первый":
+                                case "Пекарня":
                                     BakeryMenu bakeryMenu = new BakeryMenu(player);
                                     bakeryMenu.open();
                                     break;
-                                case "Второй":
+                                case "Сад":
+                                    GardenMenu gardenMenu = new GardenMenu(player);
+                                    gardenMenu.open();
                                     break;
-                                case "Третий":
+                                case "Ресторан":
+                                    RestaurantMenu restaurantMenu = new RestaurantMenu(player);
+                                    restaurantMenu.open();
                                     break;
                                 case "Четвертый":
                                     ToolsMenu menu = new ToolsMenu(player);

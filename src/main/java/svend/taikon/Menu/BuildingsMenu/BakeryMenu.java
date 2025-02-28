@@ -1,4 +1,4 @@
-package svend.taikon.Menu;
+package svend.taikon.Menu.BuildingsMenu;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -7,12 +7,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.ModelDAO.BakeryDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
-import svend.taikon.Model.Bakery;
+import svend.taikon.Menu.MenuManager;
+import svend.taikon.Model.Buildings.Bakery;
+import svend.taikon.Model.Buildings.Building;
 import svend.taikon.Model.User;
 import svend.taikon.Taikon;
 import svend.taikon.Utility.MenuUtils;
 
-public class BakeryMenu extends MenuManager{
+public class BakeryMenu extends MenuManager {
     private final UserDB userDB;
     private final BakeryDB bakeryDB;
     private final ConnectToMongoDB database;
@@ -56,16 +58,8 @@ public class BakeryMenu extends MenuManager{
                         User user = userDB.read(player.getUniqueId());
                         Bakery bakery = bakeryDB.read(player.getUniqueId());
 
-                        user.setBalance(user.getBalance() - bakery.getPrice());
-                        user.setIncome(user.getIncome() + bakery.getUpIncome());
+                        MenuUtils.handleBuildingUpgrade(player,bakery,bakeryDB,user,userDB,10);
 
-                        int upPrice = bakery.getPrice() / 10;
-
-                        bakery.setPrice(bakery.getPrice() + upPrice);
-                        bakery.setLevel(bakery.getLevel() + 1);
-
-                        userDB.update(user);
-                        bakeryDB.update(bakery);
                         break;
                     case RED_STAINED_GLASS:
                         player.closeInventory();

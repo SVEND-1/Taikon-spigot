@@ -1,18 +1,17 @@
-package svend.taikon.Model;
+package svend.taikon.Model.Buildings;
 
 import java.util.UUID;
 
-public class Bakery {
-
+public class Building {
     private String name;
     private int price;
     private int upIncome;//На сколько будет увеличивать доход
     private int level;
     private UUID userId;
 
-    public Bakery() {}
+    public Building() {}
 
-    public Bakery(String name, int price, int upIncome, int level, UUID userId) {
+    public Building(String name, int price, int upIncome, int level, UUID userId) {
         this.name = name;
         this.price = price;
         this.upIncome = upIncome;

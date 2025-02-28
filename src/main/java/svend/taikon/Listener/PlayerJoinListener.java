@@ -5,13 +5,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
-import svend.taikon.DataBase.ModelDAO.BakeryDB;
-import svend.taikon.DataBase.ModelDAO.ResourceDB;
-import svend.taikon.DataBase.ModelDAO.UserDB;
-import svend.taikon.Model.Bakery;
+import svend.taikon.DataBase.ModelDAO.*;
+import svend.taikon.Model.Buildings.Bakery;
+import svend.taikon.Model.Buildings.Garden;
+import svend.taikon.Model.Buildings.Restaurant;
 import svend.taikon.Model.Resource;
 import svend.taikon.Model.User;
 import svend.taikon.NPC.NPCCreate;
@@ -25,6 +24,8 @@ public class PlayerJoinListener implements Listener {
     private final UserDB userDB;
     private final ResourceDB resourceDB;
     private final BakeryDB bakeryDB;
+    private final GardenDB gardenDB;
+    private final RestaurantDB restaurantDB;
     private final HashMap<UUID, AddIncomeTask> activeTasks;
 
     public PlayerJoinListener(HashMap<UUID, AddIncomeTask> activeTasks) {
@@ -32,6 +33,8 @@ public class PlayerJoinListener implements Listener {
         this.userDB = new UserDB(database.getDatabase());
         this.resourceDB = new ResourceDB(database.getDatabase());
         this.bakeryDB = new BakeryDB(database.getDatabase());
+        this.gardenDB = new GardenDB(database.getDatabase());
+        this.restaurantDB = new RestaurantDB(database.getDatabase());
         this.activeTasks = activeTasks;
     }
 
@@ -61,7 +64,7 @@ public class PlayerJoinListener implements Listener {
             @Override
             public void run() {
                 if (userDB.read(player.getUniqueId()) == null) {
-                    User user = new User(player.getUniqueId(), player.getDisplayName(), 0, 0);
+                    User user = new User(player.getUniqueId(), player.getDisplayName(), 0, 0,1.0);
                     userDB.insert(user);
 
                     Resource resource = new Resource(0, 0, 0, 0, player.getUniqueId());
@@ -69,6 +72,12 @@ public class PlayerJoinListener implements Listener {
 
                     Bakery bakery = new Bakery("Пекарня",75,1,1,player.getUniqueId());
                     bakeryDB.insert(bakery);
+
+                    Garden garden = new Garden("Сад",350,5,1,player.getUniqueId());
+                    gardenDB.insert(garden);
+
+                    Restaurant restaurant = new Restaurant("Ресторан",1000,10,1,player.getUniqueId());
+                    restaurantDB.insert(restaurant);
                 }
             }
         }.runTaskAsynchronously(Taikon.getPlugin());

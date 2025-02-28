@@ -11,6 +11,7 @@ import svend.taikon.DataBase.ModelDAO.ResourceDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.Model.User;
 import svend.taikon.Taikon;
+import svend.taikon.Utility.MenuUtils;
 
 public class ToolsMenu extends MenuManager {
 
@@ -76,17 +77,17 @@ public class ToolsMenu extends MenuManager {
 
     @Override
     public void setMenuItems() {
-        ItemStack woodenAxe = createMenuItem(Material.WOODEN_AXE, "10");
-        ItemStack stoneAxe = createMenuItem(Material.STONE_AXE, "30");
-        ItemStack ironAxe = createMenuItem(Material.IRON_AXE, "70");
+        ItemStack woodenAxe = MenuUtils.createMenuItem(Material.WOODEN_AXE, "10");
+        ItemStack stoneAxe = MenuUtils.createMenuItem(Material.STONE_AXE, "30");
+        ItemStack ironAxe = MenuUtils.createMenuItem(Material.IRON_AXE, "70");
 
-        ItemStack woodenPickaxe = createMenuItem(Material.WOODEN_PICKAXE, "10");
-        ItemStack stonePickaxe = createMenuItem(Material.STONE_PICKAXE, "30");
-        ItemStack ironPickaxe = createMenuItem(Material.IRON_PICKAXE, "70");
+        ItemStack woodenPickaxe = MenuUtils.createMenuItem(Material.WOODEN_PICKAXE, "10");
+        ItemStack stonePickaxe = MenuUtils.createMenuItem(Material.STONE_PICKAXE, "30");
+        ItemStack ironPickaxe = MenuUtils.createMenuItem(Material.IRON_PICKAXE, "70");
 
-        ItemStack woodenShovel = createMenuItem(Material.WOODEN_SHOVEL, "10");
-        ItemStack stoneShovel = createMenuItem(Material.STONE_SHOVEL, "30");
-        ItemStack ironShovel = createMenuItem(Material.IRON_SHOVEL, "70");
+        ItemStack woodenShovel = MenuUtils.createMenuItem(Material.WOODEN_SHOVEL, "10");
+        ItemStack stoneShovel = MenuUtils.createMenuItem(Material.STONE_SHOVEL, "30");
+        ItemStack ironShovel = MenuUtils.createMenuItem(Material.IRON_SHOVEL, "70");
 
         inventory.setItem(11, woodenAxe);
         inventory.setItem(13, woodenPickaxe);
@@ -101,11 +102,11 @@ public class ToolsMenu extends MenuManager {
         inventory.setItem(33, ironShovel);
     }
 
-    private ItemStack createMenuItem(Material material, String name) {
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(name);
-        item.setItemMeta(meta);
-        return item;
-    }
+//    private ItemStack createMenuItem(Material material, String name) {
+//        ItemStack item = new ItemStack(material);
+//        ItemMeta meta = item.getItemMeta();
+//        meta.setDisplayName(name);
+//        item.setItemMeta(meta);
+//        return item;
+//    }
 }
