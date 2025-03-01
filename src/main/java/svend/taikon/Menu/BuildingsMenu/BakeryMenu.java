@@ -9,7 +9,6 @@ import svend.taikon.DataBase.ModelDAO.BakeryDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.Menu.MenuManager;
 import svend.taikon.Model.Buildings.Bakery;
-import svend.taikon.Model.Buildings.Building;
 import svend.taikon.Model.User;
 import svend.taikon.Taikon;
 import svend.taikon.Utility.MenuUtils;

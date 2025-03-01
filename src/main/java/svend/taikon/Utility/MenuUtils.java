@@ -2,17 +2,13 @@ package svend.taikon.Utility;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.DAO;
 import svend.taikon.DataBase.ModelDAO.UserDB;
-import svend.taikon.Model.Buildings.Bakery;
 import svend.taikon.Model.Buildings.Building;
 import svend.taikon.Model.User;
-import svend.taikon.Taikon;
 
 import java.util.UUID;
 

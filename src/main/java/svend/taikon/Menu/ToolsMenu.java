@@ -4,10 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
-import svend.taikon.DataBase.ModelDAO.ResourceDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.Model.User;
 import svend.taikon.Taikon;
@@ -102,11 +100,4 @@ public class ToolsMenu extends MenuManager {
         inventory.setItem(33, ironShovel);
     }
 
-//    private ItemStack createMenuItem(Material material, String name) {
-//        ItemStack item = new ItemStack(material);
-//        ItemMeta meta = item.getItemMeta();
-//        meta.setDisplayName(name);
-//        item.setItemMeta(meta);
-//        return item;
-//    }
 }

@@ -4,7 +4,6 @@ package svend.taikon.Task;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
-import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.ModelDAO.ResourceDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.Model.Resource;

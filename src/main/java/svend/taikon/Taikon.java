@@ -10,6 +10,7 @@ import svend.taikon.NPC.NPCClickHandler;
 import svend.taikon.NPC.NPCCreate;
 import svend.taikon.NPC.NPCMovementListener;
 import svend.taikon.Task.AddIncomeTask;
+import svend.taikon.Task.UpdateHologramTask;
 import svend.taikon.View.HologramTop;
 import svend.taikon.View.ScoreboardView;
 
@@ -23,7 +24,7 @@ public final class Taikon extends JavaPlugin {
     public static Taikon getPlugin() {
         return plugin;
     }
-
+    private HologramTop hologramTop;
 
     @Override
     public void onEnable() {
@@ -31,7 +32,10 @@ public final class Taikon extends JavaPlugin {
 
         connectToMongoDB = new ConnectToMongoDB();
 
-        HologramTop.create();
+        hologramTop = new HologramTop();
+        UpdateHologramTask updateTask = new UpdateHologramTask(hologramTop);
+
+        updateTask.runTaskTimer(this, 0L, 20L * 60);
 
         NPCCreate.Create();
         NPCClickHandler.registerClickHandler(this);
@@ -53,7 +57,7 @@ public final class Taikon extends JavaPlugin {
     @Override
     public void onDisable() {
         connectToMongoDB.close();
-        HologramTop.delete();
+        hologramTop.delete();
     }
 
 }

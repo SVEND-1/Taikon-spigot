@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Indexes.descending;
 
 public class UserDB implements DAO<User, UUID> {
     private final MongoCollection<Document> userCollection;
@@ -63,7 +64,6 @@ public class UserDB implements DAO<User, UUID> {
                 .append("incomeMultiplier", user.getIncomeMultiplier());
     }
 
-
     public User mapDocumentToUser(Document doc) {
         return new User(
                 UUID.fromString(doc.getString("_id")),
@@ -72,5 +72,21 @@ public class UserDB implements DAO<User, UUID> {
                 doc.getLong("balance"),
                 doc.getDouble("incomeMultiplier")
         );
+    }
+
+    public List<User> top10() {
+        List<User> users = new ArrayList<>();
+        try (MongoCursor<Document> cursor = userCollection.find().sort(descending("balance")).limit(10).iterator()) {
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                User user = mapDocumentToUser(doc);
+                if (user != null) {
+                    users.add(user);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return users;
     }
 }

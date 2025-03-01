@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.ModelDAO.ResourceDB;
@@ -93,13 +92,6 @@ public class SellResourceMenu extends MenuManager {
         inventory.setItem(16, sand);
     }
 
-//    private ItemStack createMenuItem(Material material, String name) {
-//        ItemStack item = new ItemStack(material);
-//        ItemMeta meta = item.getItemMeta();
-//        meta.setDisplayName(name);
-//        item.setItemMeta(meta);
-//        return item;
-//    }
 
     private void sellResource(Resource resource, User user, int amount, Consumer<Resource> resetResource) {
         user.setBalance(user.getBalance() + amount);

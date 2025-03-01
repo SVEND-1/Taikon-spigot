@@ -1,20 +1,15 @@
 package svend.taikon.Menu;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import svend.taikon.Boost.IncomeBoostManager;
 import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.Model.User;
 import svend.taikon.Taikon;
 import svend.taikon.Utility.MenuUtils;
-
-import java.util.List;
 
 public class DonatMenu extends MenuManager{
     private final UserDB userDB;
@@ -63,8 +58,6 @@ public class DonatMenu extends MenuManager{
                     case DIAMOND_PICKAXE:
                     case DIAMOND_SHOVEL:
                         Tools(player, user, clickedItemType);
-                        break;
-                    case GOLD_ORE:
                         break;
                 }
 
@@ -117,24 +110,15 @@ public class DonatMenu extends MenuManager{
     @Override
     public void setMenuItems() {
         ItemStack fly = MenuUtils.createMenuItem(Material.FEATHER,"Полет: 100");
-        ItemStack boost = MenuUtils.createMenuItem(Material.GOLD_ORE,"Бустер х2: 200");
         ItemStack diamondAxe = MenuUtils.createMenuItem(Material.DIAMOND_AXE,"Алмазный топор: 150");
         ItemStack diamondPickaxe = MenuUtils.createMenuItem(Material.DIAMOND_PICKAXE,"Алмазная кирка: 150");
         ItemStack diamondShovel = MenuUtils.createMenuItem(Material.DIAMOND_SHOVEL,"Алмазная лопата: 150");
 
         inventory.setItem(10,fly);
-        inventory.setItem(12,boost);
         inventory.setItem(14,diamondAxe);
         inventory.setItem(15,diamondPickaxe);
         inventory.setItem(16,diamondShovel);
     }
 
 
-//    private ItemStack createMenuItem(Material material, String name) {
-//        ItemStack item = new ItemStack(material);
-//        ItemMeta meta = item.getItemMeta();
-//        meta.setDisplayName(name);
-//        item.setItemMeta(meta);
-//        return item;
-//    }
 }
