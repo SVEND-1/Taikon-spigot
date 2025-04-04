@@ -6,6 +6,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import svend.taikon.DataBase.DAO;
+import svend.taikon.LargeNumber;
 import svend.taikon.Model.Buildings.Bakery;
 import svend.taikon.Model.Buildings.Restaurant;
 
@@ -25,19 +26,22 @@ public class RestaurantDB implements DAO<Restaurant, UUID> {
 
     @Override
     public boolean insert(Restaurant restaurant) {
-        restaurantCollection.insertOne(createBakeryDocument(restaurant));
+        restaurantCollection.insertOne(createRestaurantDocument(restaurant));
         return true;
     }
 
     @Override
     public Restaurant read(UUID userId) {
         Document doc = restaurantCollection.find(eq("userId", userId.toString())).first();
-        return doc != null ? mapDocumentToBakery(doc) : null;
+        return doc != null ? mapDocumentToRestaurant(doc) : null;
     }
 
     @Override
     public boolean update(Restaurant restaurant) {
-        UpdateResult result = restaurantCollection.replaceOne(eq("userId", restaurant.getUserId().toString()), createBakeryDocument(restaurant));
+        UpdateResult result = restaurantCollection.replaceOne(
+                eq("userId", restaurant.getUserId().toString()),
+                createRestaurantDocument(restaurant)
+        );
         return result.getModifiedCount() > 0;
     }
 
@@ -50,25 +54,25 @@ public class RestaurantDB implements DAO<Restaurant, UUID> {
     @Override
     public List<Restaurant> getAll() {
         return StreamSupport.stream(restaurantCollection.find().spliterator(), false)
-                .map(this::mapDocumentToBakery)
+                .map(this::mapDocumentToRestaurant)
                 .collect(Collectors.toList());
     }
 
-    private Document createBakeryDocument(Restaurant restaurant) {
+    private Document createRestaurantDocument(Restaurant restaurant) {
         return new Document("name", restaurant.getName())
-                .append("price", restaurant.getPrice())
+                .append("price", restaurant.getPrice().getValue().toString())
+                .append("upIncome", restaurant.getUpIncome().getValue().toString())
                 .append("level", restaurant.getLevel())
-                .append("upIncome", restaurant.getUpIncome())
                 .append("userId", restaurant.getUserId().toString());
     }
 
-    private Restaurant mapDocumentToBakery(Document doc) {
-        Restaurant restaurant = new Restaurant();
-        restaurant.setName(doc.getString("name"));
-        restaurant.setPrice(doc.getInteger("price"));
-        restaurant.setUpIncome(doc.getInteger("upIncome"));
-        restaurant.setLevel(doc.getInteger("level"));
-        restaurant.setUserId(UUID.fromString(doc.getString("userId")));
-        return restaurant;
+    private Restaurant mapDocumentToRestaurant(Document doc) {
+        return new Restaurant(
+                doc.getString("name"),
+                new LargeNumber(doc.getString("price")),
+                new LargeNumber(doc.getString("upIncome")),
+                doc.getInteger("level"),
+                UUID.fromString(doc.getString("userId"))
+        );
     }
 }

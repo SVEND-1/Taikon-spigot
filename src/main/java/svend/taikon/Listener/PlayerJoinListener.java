@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.ModelDAO.*;
+import svend.taikon.LargeNumber;
 import svend.taikon.Model.Buildings.Bakery;
 import svend.taikon.Model.Buildings.Garden;
 import svend.taikon.Model.Buildings.Restaurant;
@@ -46,6 +47,8 @@ public class PlayerJoinListener implements Listener {
         addPlayerToDataBase(player);
         NPCCreate.sendNPCsToPlayers(player);
 
+        event.setJoinMessage(null);
+
         if (!activeTasks.containsKey(player.getUniqueId())) {
             AddIncomeTask task = new AddIncomeTask(player);
             activeTasks.put(player.getUniqueId(), task);
@@ -53,6 +56,7 @@ public class PlayerJoinListener implements Listener {
         }
     }
     private void startSetting(Player player) {
+        //Todo:дать серивезованный инвентарь
         player.setGameMode(GameMode.SURVIVAL);
         player.setInvulnerable(true);
         player.setFoodLevel(25);
@@ -64,19 +68,19 @@ public class PlayerJoinListener implements Listener {
             @Override
             public void run() {
                 if (userDB.read(player.getUniqueId()) == null) {
-                    User user = new User(player.getUniqueId(), player.getDisplayName(), 0, 0,1.0);
+                    User user = new User(player.getUniqueId(), player.getDisplayName(), new LargeNumber("0"), new LargeNumber("0"),1.0);
                     userDB.insert(user);
 
                     Resource resource = new Resource(0, 0, 0, 0, player.getUniqueId());
                     resourceDB.insert(resource);
 
-                    Bakery bakery = new Bakery("Пекарня",75,1,1,player.getUniqueId());
+                    Bakery bakery = new Bakery("Пекарня",new LargeNumber("75"),new LargeNumber("1"),1,player.getUniqueId());
                     bakeryDB.insert(bakery);
 
-                    Garden garden = new Garden("Сад",350,5,1,player.getUniqueId());
+                    Garden garden = new Garden("Сад", new LargeNumber("350"),new LargeNumber("5"),1,player.getUniqueId());
                     gardenDB.insert(garden);
 
-                    Restaurant restaurant = new Restaurant("Ресторан",1000,10,1,player.getUniqueId());
+                    Restaurant restaurant = new Restaurant("Ресторан",new LargeNumber("1000"),new LargeNumber("10"),1,player.getUniqueId());
                     restaurantDB.insert(restaurant);
                 }
             }

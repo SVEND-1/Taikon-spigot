@@ -2,6 +2,8 @@ package svend.taikon;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import svend.taikon.Admin.BanPlayerCommand;
+import svend.taikon.Admin.Test;
 import svend.taikon.Command.OpenMenuCommand;
 import svend.taikon.Command.SpawnCommand;
 import svend.taikon.DataBase.ConnectToMongoDB;
@@ -49,9 +51,9 @@ public final class Taikon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BreakingToolsListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
 
-
         this.getCommand("spawn").setExecutor(new SpawnCommand());
         this.getCommand("menu").setExecutor(new OpenMenuCommand());
+        this.getCommand("localBan").setExecutor(new BanPlayerCommand());
     }
 
     @Override

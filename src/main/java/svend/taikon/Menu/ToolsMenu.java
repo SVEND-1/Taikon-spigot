@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
+import svend.taikon.LargeNumber;
 import svend.taikon.Model.User;
 import svend.taikon.Taikon;
 import svend.taikon.Utility.MenuUtils;
@@ -45,15 +46,15 @@ public class ToolsMenu extends MenuManager {
             player.sendMessage("У вас уже есть этот предмет.");
             return;
         }
-        int price = Integer.parseInt(itemClick.getItemMeta().getDisplayName());
+        LargeNumber price = new LargeNumber( itemClick.getItemMeta().getDisplayName());
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 User user = userDB.read(player.getUniqueId());
 
-                if (user.getBalance() >= price) {
-                    user.setBalance(user.getBalance() - price);
+                if (user.getBalance().leftOrEqual(price)) {
+                    user.setBalance(user.getBalance().subtract(price));
                     userDB.update(user);
                     new BukkitRunnable() {
                         @Override

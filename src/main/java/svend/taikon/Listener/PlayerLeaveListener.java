@@ -21,10 +21,13 @@ public class PlayerLeaveListener implements Listener {
         Player player = event.getPlayer();
         UUID playerId = player.getUniqueId();
 
+        event.setQuitMessage(null);
+
         if (activeTasks.containsKey(playerId)) {
             AddIncomeTask task = activeTasks.get(playerId);
             task.cancel();
             activeTasks.remove(playerId);
         }
+        //Todo:серизовать инвентарь
     }
 }

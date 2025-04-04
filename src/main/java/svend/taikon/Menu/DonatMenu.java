@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
+import svend.taikon.LargeNumber;
 import svend.taikon.Model.User;
 import svend.taikon.Taikon;
 import svend.taikon.Utility.MenuUtils;
@@ -68,13 +69,13 @@ public class DonatMenu extends MenuManager{
 
 
     private void Fly(Player player, User user) {
-        if (user.getBalance() >= 100) {
+        if (user.getBalance().leftOrEqual(new LargeNumber("100"))) {
             if (!player.getAllowFlight()) {
                 player.setAllowFlight(true);
                 player.closeInventory();
                 player.sendMessage("Полет активирован!");
 
-                user.setBalance(user.getBalance() - 100);
+                user.setBalance(user.getBalance().subtract(new LargeNumber("100")));
             } else {
                 player.sendMessage("У вас уже есть полет");
             }
@@ -84,7 +85,7 @@ public class DonatMenu extends MenuManager{
     }
 
     private void Tools(Player player, User user, Material clickedItemType) {
-        if (user.getBalance() >= 150) {
+        if (user.getBalance().leftOrEqual(new LargeNumber("150"))) {
             ItemStack itemToCheck = new ItemStack(clickedItemType);
             ItemStack itemToAdd = new ItemStack(clickedItemType);
 
@@ -95,7 +96,7 @@ public class DonatMenu extends MenuManager{
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        user.setBalance(user.getBalance() - 150);
+                        user.setBalance(user.getBalance().subtract(new LargeNumber("150")));
                         userDB.update(user);
                     }
                 }.runTaskAsynchronously(Taikon.getPlugin());

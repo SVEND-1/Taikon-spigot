@@ -12,3 +12,12 @@ commands:
 
   menu:
     description: "Можно открыть любое меню"
+
+  localBan:
+    description: "Забанить игроков с указанным сроком и причиной"
+
+
+
+permissions:
+  permissions.Permissions:
+    default: op

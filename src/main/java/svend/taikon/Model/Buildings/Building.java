@@ -1,17 +1,19 @@
 package svend.taikon.Model.Buildings;
 
+import svend.taikon.LargeNumber;
+
 import java.util.UUID;
 
 public class Building {
     private String name;
-    private int price;
-    private int upIncome;//На сколько будет увеличивать доход
+    private LargeNumber price;
+    private LargeNumber upIncome;//На сколько будет увеличивать доход
     private int level;
     private UUID userId;
 
     public Building() {}
 
-    public Building(String name, int price, int upIncome, int level, UUID userId) {
+    public Building(String name, LargeNumber price, LargeNumber upIncome, int level, UUID userId) {
         this.name = name;
         this.price = price;
         this.upIncome = upIncome;
@@ -27,19 +29,19 @@ public class Building {
         this.name = name;
     }
 
-    public int getPrice() {
+    public LargeNumber getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(LargeNumber price) {
         this.price = price;
     }
 
-    public int getUpIncome() {
+    public LargeNumber getUpIncome() {
         return upIncome;
     }
 
-    public void setUpIncome(int upIncome) {
+    public void setUpIncome(LargeNumber upIncome) {
         this.upIncome = upIncome;
     }
 

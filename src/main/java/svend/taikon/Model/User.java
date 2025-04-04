@@ -1,5 +1,7 @@
 package svend.taikon.Model;
 
+import svend.taikon.LargeNumber;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -7,14 +9,14 @@ import java.util.UUID;
 public class User {
     private UUID id;
     private String name;
-    private long income;
-    private long balance;
+    private LargeNumber income;
+    private LargeNumber balance;
     private double incomeMultiplier;
 
     public User() {
     }
 
-    public User(UUID id, String name, long income, long balance,double incomeMultiplier) {
+    public User(UUID id, String name, LargeNumber income, LargeNumber balance,double incomeMultiplier) {
         this.id = id;
         this.name = name;
         this.income = income;
@@ -29,9 +31,6 @@ public class User {
         this.incomeMultiplier = incomeMultiplier;
     }
 
-    public long getActualIncome() {
-        return (long) (income * incomeMultiplier); // Возвращает доход с учетом модификатора
-    }
     public UUID getId() {
         return id;
     }
@@ -48,19 +47,19 @@ public class User {
         this.name = name;
     }
 
-    public long getIncome() {
+    public LargeNumber getIncome() {
         return income;
     }
 
-    public void setIncome(long income) {
+    public void setIncome(LargeNumber income) {
         this.income = income;
     }
 
-    public long getBalance() {
+    public LargeNumber getBalance() {
         return balance;
     }
 
-    public void setBalance(long balance) {
+    public void setBalance(LargeNumber balance) {
         this.balance = balance;
     }
 

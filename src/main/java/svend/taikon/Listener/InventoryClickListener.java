@@ -11,8 +11,6 @@ public class InventoryClickListener implements Listener {
         if (e.getInventory().getHolder() instanceof MenuManager) {
             MenuManager menu = (MenuManager) e.getInventory().getHolder();
             menu.handleMenu(e);
-        } else {
-            System.out.println("Inventory holder is not MenuManager");
         }
     }
 }

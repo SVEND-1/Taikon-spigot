@@ -4,6 +4,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import svend.taikon.Admin.menu.AdminBanMenu;
+import svend.taikon.Admin.menu.AdminMenu;
+import svend.taikon.Admin.Test;
 import svend.taikon.Menu.BuildingsMenu.BakeryMenu;
 import svend.taikon.Menu.BuildingsMenu.GardenMenu;
 import svend.taikon.Menu.BuildingsMenu.RestaurantMenu;
@@ -41,6 +44,18 @@ public class OpenMenuCommand implements CommandExecutor {
             else if(strings[0].equalsIgnoreCase("Restaurant")){
                 RestaurantMenu restaurantMenu = new RestaurantMenu(player);
                 restaurantMenu.open();
+            }
+            else if(strings[0].equalsIgnoreCase("adminMenu")){
+                AdminMenu AdminMenu = new AdminMenu(player);
+                AdminMenu.open();
+            }
+            else if(strings[0].equalsIgnoreCase("Test")){
+                Test test = new Test(player);
+                test.open();
+            }
+            else if(strings[0].equalsIgnoreCase("ban")){
+                AdminBanMenu test = new AdminBanMenu(player);
+                test.open();
             }
         }
 

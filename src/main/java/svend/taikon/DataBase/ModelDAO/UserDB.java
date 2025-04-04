@@ -7,6 +7,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import svend.taikon.DataBase.DAO;
+import svend.taikon.LargeNumber;
 import svend.taikon.Model.User;
 
 import java.util.ArrayList;
@@ -59,8 +60,8 @@ public class UserDB implements DAO<User, UUID> {
     private Document createUserDocument(User user) {
         return new Document("_id", user.getId().toString())
                 .append("name", user.getName())
-                .append("income", user.getIncome())
-                .append("balance", user.getBalance())
+                .append("income", user.getIncome().getValue().toString()) // Сериализуем LargeNumber
+                .append("balance", user.getBalance().getValue().toString()) // Сериализуем LargeNumber
                 .append("incomeMultiplier", user.getIncomeMultiplier());
     }
 
@@ -68,8 +69,8 @@ public class UserDB implements DAO<User, UUID> {
         return new User(
                 UUID.fromString(doc.getString("_id")),
                 doc.getString("name"),
-                doc.getLong("income"),
-                doc.getLong("balance"),
+                new LargeNumber(doc.getString("income")),
+                new LargeNumber(doc.getString("balance")),
                 doc.getDouble("incomeMultiplier")
         );
     }

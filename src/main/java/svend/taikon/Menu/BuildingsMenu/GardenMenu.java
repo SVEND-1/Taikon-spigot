@@ -7,6 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.ModelDAO.GardenDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
+import svend.taikon.LargeNumber;
 import svend.taikon.Menu.MenuManager;
 import svend.taikon.Model.Buildings.Garden;
 import svend.taikon.Model.User;
@@ -57,7 +58,7 @@ public class GardenMenu extends MenuManager {
                         User user = userDB.read(player.getUniqueId());
                         Garden garden = gardenDB.read(player.getUniqueId());
 
-                        MenuUtils.handleBuildingUpgrade(player,garden,gardenDB,user,userDB,7);
+                        MenuUtils.handleBuildingUpgrade(player,garden,gardenDB,user,userDB,new LargeNumber("7"));
 
                         break;
                     case RED_STAINED_GLASS:

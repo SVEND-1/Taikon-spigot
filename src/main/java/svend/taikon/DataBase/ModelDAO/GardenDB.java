@@ -5,7 +5,9 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import svend.taikon.DataBase.DAO;
+import svend.taikon.LargeNumber;
 import svend.taikon.Model.Buildings.Bakery;
 import svend.taikon.Model.Buildings.Garden;
 
@@ -25,19 +27,22 @@ public class GardenDB implements DAO<Garden, UUID> {
 
     @Override
     public boolean insert(Garden garden) {
-        gardenCollection.insertOne(createBakeryDocument(garden));
+        gardenCollection.insertOne(createGardenDocument(garden));
         return true;
     }
 
     @Override
     public Garden read(UUID userId) {
         Document doc = gardenCollection.find(eq("userId", userId.toString())).first();
-        return doc != null ? mapDocumentToBakery(doc) : null;
+        return doc != null ? mapDocumentToGarden(doc) : null;
     }
 
     @Override
     public boolean update(Garden garden) {
-        UpdateResult result = gardenCollection.replaceOne(eq("userId", garden.getUserId().toString()), createBakeryDocument(garden));
+        UpdateResult result = gardenCollection.replaceOne(
+                eq("userId", garden.getUserId().toString()),
+                createGardenDocument(garden)
+        );
         return result.getModifiedCount() > 0;
     }
 
@@ -50,25 +55,26 @@ public class GardenDB implements DAO<Garden, UUID> {
     @Override
     public List<Garden> getAll() {
         return StreamSupport.stream(gardenCollection.find().spliterator(), false)
-                .map(this::mapDocumentToBakery)
+                .map(this::mapDocumentToGarden)
                 .collect(Collectors.toList());
     }
 
-    private Document createBakeryDocument(Garden garden) {
-        return new Document("name", garden.getName())
-                .append("price", garden.getPrice())
+    private Document createGardenDocument(Garden garden) {
+        return new Document()
+                .append("name", garden.getName())
+                .append("price", garden.getPrice().getValue().toString())
+                .append("upIncome", garden.getUpIncome().getValue().toString())
                 .append("level", garden.getLevel())
-                .append("upIncome", garden.getUpIncome())
                 .append("userId", garden.getUserId().toString());
     }
 
-    private Garden mapDocumentToBakery(Document doc) {
-        Garden garden = new Garden();
-        garden.setName(doc.getString("name"));
-        garden.setPrice(doc.getInteger("price"));
-        garden.setUpIncome(doc.getInteger("upIncome"));
-        garden.setLevel(doc.getInteger("level"));
-        garden.setUserId(UUID.fromString(doc.getString("userId")));
-        return garden;
+    private Garden mapDocumentToGarden(Document doc) {
+        return new Garden(
+                doc.getString("name"),
+                new LargeNumber(doc.getString("price")),
+                new LargeNumber(doc.getString("upIncome")),
+                doc.getInteger("level"),
+                UUID.fromString(doc.getString("userId"))
+        );
     }
 }

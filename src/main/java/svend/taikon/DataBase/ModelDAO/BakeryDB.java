@@ -6,6 +6,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import svend.taikon.DataBase.DAO;
+import svend.taikon.LargeNumber;
 import svend.taikon.Model.Buildings.Bakery;
 import svend.taikon.Model.Buildings.Building;
 
@@ -37,7 +38,10 @@ public class BakeryDB implements DAO<Bakery, UUID> {
 
     @Override
     public boolean update(Bakery bakery) {
-        UpdateResult result = bakeryCollection.replaceOne(eq("userId", bakery.getUserId().toString()), createBakeryDocument(bakery));
+        UpdateResult result = bakeryCollection.replaceOne(
+                eq("userId", bakery.getUserId().toString()),
+                createBakeryDocument(bakery)
+        );
         return result.getModifiedCount() > 0;
     }
 
@@ -56,19 +60,19 @@ public class BakeryDB implements DAO<Bakery, UUID> {
 
     private Document createBakeryDocument(Bakery bakery) {
         return new Document("name", bakery.getName())
-                .append("price", bakery.getPrice())
+                .append("price", bakery.getPrice().getValue().toString())
+                .append("upIncome", bakery.getUpIncome().getValue().toString())
                 .append("level", bakery.getLevel())
-                .append("upIncome", bakery.getUpIncome())
                 .append("userId", bakery.getUserId().toString());
     }
 
     private Bakery mapDocumentToBakery(Document doc) {
-        Bakery bakery = new Bakery();
-        bakery.setName(doc.getString("name"));
-        bakery.setPrice(doc.getInteger("price"));
-        bakery.setUpIncome(doc.getInteger("upIncome"));
-        bakery.setLevel(doc.getInteger("level"));
-        bakery.setUserId(UUID.fromString(doc.getString("userId")));
-        return bakery;
+        return new Bakery(
+                doc.getString("name"),
+                new LargeNumber(doc.getString("price")),
+                new LargeNumber(doc.getString("upIncome")),
+                doc.getInteger("level"),
+                UUID.fromString(doc.getString("userId"))
+        );
     }
 }

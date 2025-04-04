@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.ModelDAO.ResourceDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
+import svend.taikon.LargeNumber;
 import svend.taikon.Model.Resource;
 import svend.taikon.Model.User;
 import svend.taikon.Taikon;
@@ -94,7 +95,7 @@ public class SellResourceMenu extends MenuManager {
 
 
     private void sellResource(Resource resource, User user, int amount, Consumer<Resource> resetResource) {
-        user.setBalance(user.getBalance() + amount);
+        user.setBalance(user.getBalance().add(new LargeNumber(String.valueOf(amount))));
         resetResource.accept(resource);
         userDB.update(user);
         resourceDB.update(resource);

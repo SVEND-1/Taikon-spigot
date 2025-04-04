@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
+import svend.taikon.LargeNumber;
 import svend.taikon.Model.User;
 
 public class AddIncomeTask extends BukkitRunnable {
@@ -19,7 +20,7 @@ public class AddIncomeTask extends BukkitRunnable {
     public void run() {
         User user = userDB.read(player.getUniqueId());
 
-        user.setBalance(user.getBalance() +  user.getActualIncome());
+        user.setBalance(user.getBalance().add(user.getIncome()));
         userDB.update(user);
 
     }

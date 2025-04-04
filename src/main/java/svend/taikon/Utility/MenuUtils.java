@@ -7,20 +7,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import svend.taikon.DataBase.DAO;
 import svend.taikon.DataBase.ModelDAO.UserDB;
+import svend.taikon.LargeNumber;
 import svend.taikon.Model.Buildings.Building;
 import svend.taikon.Model.User;
 
 import java.util.UUID;
 
 public class MenuUtils {
-    public static <T extends Building> void handleBuildingUpgrade(Player player, T building, DAO<T, UUID> buildingDB, User user, UserDB userDB,int ratio) {
-        if (user.getBalance() >= building.getPrice()) {
+    public static <T extends Building> void handleBuildingUpgrade(Player player, T building, DAO<T, UUID> buildingDB, User user, UserDB userDB, LargeNumber ratio) {
+        if (user.getBalance().leftOrEqual(building.getPrice())) {
             if (building.getLevel() < 75) {
-                user.setBalance(user.getBalance() - building.getPrice());
-                user.setIncome(user.getIncome() + building.getUpIncome());
+                user.setBalance(user.getBalance().subtract(building.getPrice()));
+                user.setIncome(user.getIncome().add(building.getUpIncome()));
 
-                int upPrice = building.getPrice() / ratio;
-                building.setPrice(building.getPrice() + upPrice);
+                LargeNumber upPrice = building.getPrice().divide(ratio);
+                building.setPrice(building.getPrice().add(upPrice));
                 building.setLevel(building.getLevel() + 1);
 
                 userDB.update(user);
