@@ -17,6 +17,7 @@ import svend.taikon.Task.AddIncomeTask;
 import svend.taikon.Task.UpdateHologramTask;
 import svend.taikon.View.HologramTop;
 import svend.taikon.View.ScoreboardView;
+import svend.taikon.WorldEdit.CreateAndPasteBuildingsCommand;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -43,19 +44,25 @@ public final class Taikon extends JavaPlugin {
 
         NPCCreate.Create();
         NPCClickHandler.registerClickHandler(this);
+
         getServer().getPluginManager().registerEvents(new NPCMovementListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerDropItemListener(), this);
         getServer().getPluginManager().registerEvents(new ScoreboardView(), this);
+
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(activeTasks), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(activeTasks), this);
         getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
         getServer().getPluginManager().registerEvents(new FoodLevelListener(), this);
         getServer().getPluginManager().registerEvents(new BreakingToolsListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDropItemListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
+        getServer().getPluginManager().registerEvents(new EntityDamageListener(), this);
+        getServer().getPluginManager().registerEvents(new EntityExplodeListener(), this);
+        getServer().getPluginManager().registerEvents(new PlaceBlockListener(), this);
 
         this.getCommand("spawn").setExecutor(new SpawnCommand());
         this.getCommand("menu").setExecutor(new OpenMenuCommand());
         this.getCommand("localBan").setExecutor(new BanPlayerCommand());
+        this.getCommand("testReg").setExecutor(new CreateAndPasteBuildingsCommand());
     }
 
     @Override

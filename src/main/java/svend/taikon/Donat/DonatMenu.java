@@ -51,17 +51,17 @@ public class DonatMenu extends MenuManager {
             @Override
             public void run() {
                 User user = userDB.read(player.getUniqueId());
-                BusterManager busterManager = new BusterManager(userDB);
+                BusterIncome busterIncome = new BusterIncome(userDB);
 
                 switch (clickedItemType) {
                     case FEATHER:
                         Fly(player, user);
                         break;
                     case DIAMOND:
-                        busterManager.turnOnTheLocalBooster(player);
+                        busterIncome.turnOnTheLocalBooster(player);
                         break;
                     case DIAMOND_BLOCK:
-                        busterManager.turnOnTheGlobalBooster();
+                        busterIncome.turnOnTheGlobalBooster();
                         break;
                     case DIAMOND_AXE:
                     case DIAMOND_PICKAXE:
@@ -122,8 +122,8 @@ public class DonatMenu extends MenuManager {
         ItemStack localBoost = MenuUtils.createMenuItemWithLore(Material.DIAMOND,"Локальный буст х2","Цена: 120","Время: 30мин");
         ItemStack globalBoost = MenuUtils.createMenuItemWithLore(Material.DIAMOND_BLOCK,"Глобальный буст х2","Цена: 120","Время: 30мин");
         ItemStack diamondAxe = MenuUtils.createMenuItemWithLore(Material.DIAMOND_AXE,"Алмазный топор","Цена: 150","Доход +4");
-        ItemStack diamondPickaxe = MenuUtils.createMenuItemWithLore(Material.DIAMOND_PICKAXE,"Алмазная кирка: 150","Цена: 150","Доход +4");
-        ItemStack diamondShovel = MenuUtils.createMenuItemWithLore(Material.DIAMOND_SHOVEL,"Алмазная лопата: 150","Цена: 150","Доход +4");
+        ItemStack diamondPickaxe = MenuUtils.createMenuItemWithLore(Material.DIAMOND_PICKAXE,"Алмазная кирка","Цена: 150","Доход +4");
+        ItemStack diamondShovel = MenuUtils.createMenuItemWithLore(Material.DIAMOND_SHOVEL,"Алмазная лопата","Цена: 150","Доход +4");
 
         inventory.setItem(10,fly);
         inventory.setItem(12,localBoost);

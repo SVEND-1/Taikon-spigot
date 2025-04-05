@@ -19,6 +19,9 @@ commands:
   bust:
     description: "Test busta"
 
+  testReg:
+    description: "Ворлд эдит"
+
 #отключение достижений
 advancements:
   disable-saving: true

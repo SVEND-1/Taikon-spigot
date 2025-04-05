@@ -4,14 +4,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ModelDAO.UserDB;
+import svend.taikon.LargeNumber;
 import svend.taikon.Model.User;
 import svend.taikon.Taikon;
 
-public class BusterManager {
+public class BusterIncome {
     private final UserDB userDB;
     private static boolean globalBoostActive = false;
 
-    public BusterManager(UserDB userDB) {
+    public BusterIncome(UserDB userDB) {
         this.userDB = userDB;
     }
 
@@ -66,7 +67,9 @@ public class BusterManager {
 
                     if(user.getIncomeMultiplier() >= 4){
                         player.sendMessage("Бустер уже активирован");
+                        return;
                     }
+
 
                     if (user != null) {
                         user.setIncomeMultiplier(user.getIncomeMultiplier() * 2);
