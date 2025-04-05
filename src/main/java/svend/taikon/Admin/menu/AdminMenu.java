@@ -50,9 +50,17 @@ public class AdminMenu extends MenuManager {
                 AdminBanMenu adminBanMenu = new AdminBanMenu(player);
                 adminBanMenu.open();
                 break;
+            case GOLD_BLOCK:
+                break;
+            case DIAMOND:
+                break;
             case ENDER_PEARL:
                 AdminTeleportMenu adminTeleportMenu = new AdminTeleportMenu(player);
                 adminTeleportMenu.open();
+                break;
+            case PAPER:
+                AdminStatisticMenu adminStatisticMenu = new AdminStatisticMenu(player);
+                adminStatisticMenu.open();
                 break;
         }
     }

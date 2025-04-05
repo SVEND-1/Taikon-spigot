@@ -71,7 +71,7 @@ public class UserDB implements DAO<User, UUID> {
                 doc.getString("name"),
                 new LargeNumber(doc.getString("income")),
                 new LargeNumber(doc.getString("balance")),
-                doc.getDouble("incomeMultiplier")
+                doc.getInteger("incomeMultiplier")
         );
     }
 

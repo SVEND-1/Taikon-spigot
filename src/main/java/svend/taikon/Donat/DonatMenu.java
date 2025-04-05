@@ -1,4 +1,4 @@
-package svend.taikon.Menu;
+package svend.taikon.Donat;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -8,11 +8,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.LargeNumber;
+import svend.taikon.Menu.MenuManager;
 import svend.taikon.Model.User;
 import svend.taikon.Taikon;
 import svend.taikon.Utility.MenuUtils;
 
-public class DonatMenu extends MenuManager{
+public class DonatMenu extends MenuManager {
     private final UserDB userDB;
     private final ConnectToMongoDB database;
     public DonatMenu(Player player) {
@@ -50,10 +51,17 @@ public class DonatMenu extends MenuManager{
             @Override
             public void run() {
                 User user = userDB.read(player.getUniqueId());
+                BusterManager busterManager = new BusterManager(userDB);
 
                 switch (clickedItemType) {
                     case FEATHER:
                         Fly(player, user);
+                        break;
+                    case DIAMOND:
+                        busterManager.turnOnTheLocalBooster(player);
+                        break;
+                    case DIAMOND_BLOCK:
+                        busterManager.turnOnTheGlobalBooster();
                         break;
                     case DIAMOND_AXE:
                     case DIAMOND_PICKAXE:
@@ -110,12 +118,16 @@ public class DonatMenu extends MenuManager{
 
     @Override
     public void setMenuItems() {
-        ItemStack fly = MenuUtils.createMenuItem(Material.FEATHER,"Полет: 100");
-        ItemStack diamondAxe = MenuUtils.createMenuItem(Material.DIAMOND_AXE,"Алмазный топор: 150");
-        ItemStack diamondPickaxe = MenuUtils.createMenuItem(Material.DIAMOND_PICKAXE,"Алмазная кирка: 150");
-        ItemStack diamondShovel = MenuUtils.createMenuItem(Material.DIAMOND_SHOVEL,"Алмазная лопата: 150");
+        ItemStack fly = MenuUtils.createMenuItemWithLore(Material.FEATHER,"Полет","Цена: 100","Вы сможете летать по карте");
+        ItemStack localBoost = MenuUtils.createMenuItemWithLore(Material.DIAMOND,"Локальный буст х2","Цена: 120","Время: 30мин");
+        ItemStack globalBoost = MenuUtils.createMenuItemWithLore(Material.DIAMOND_BLOCK,"Глобальный буст х2","Цена: 120","Время: 30мин");
+        ItemStack diamondAxe = MenuUtils.createMenuItemWithLore(Material.DIAMOND_AXE,"Алмазный топор","Цена: 150","Доход +4");
+        ItemStack diamondPickaxe = MenuUtils.createMenuItemWithLore(Material.DIAMOND_PICKAXE,"Алмазная кирка: 150","Цена: 150","Доход +4");
+        ItemStack diamondShovel = MenuUtils.createMenuItemWithLore(Material.DIAMOND_SHOVEL,"Алмазная лопата: 150","Цена: 150","Доход +4");
 
         inventory.setItem(10,fly);
+        inventory.setItem(12,localBoost);
+        inventory.setItem(13,globalBoost);
         inventory.setItem(14,diamondAxe);
         inventory.setItem(15,diamondPickaxe);
         inventory.setItem(16,diamondShovel);

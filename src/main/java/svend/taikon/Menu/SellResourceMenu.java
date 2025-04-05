@@ -55,37 +55,66 @@ public class SellResourceMenu extends MenuManager {
         return 27;
     }
 
+
     @Override
     public void handleMenu(InventoryClickEvent e) {
         e.setCancelled(true);
 
-        if (e.getView().getTitle().equals(getMenuName())) {
-            if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR || !RESOURCE_PRICES.containsKey(e.getCurrentItem().getType())) {
-                return;
-            }
-            Player player = (Player) e.getWhoClicked();
-            Material clickedItemType = e.getCurrentItem().getType();
+        if (!e.getView().getTitle().equals(getMenuName())) {
+            return;
+        }
+        Player player = (Player) e.getWhoClicked();
+        ItemStack clickedItem = e.getCurrentItem();
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Resource resource = resourceDB.read(player.getUniqueId());
-                    User user = userDB.read(player.getUniqueId());
+        if (clickedItem == null || clickedItem.getType() == Material.AIR) {
+            return;
+        }
 
-                    int amount = RESOURCE_PRICES.get(clickedItemType).apply(resource);
-
-                    sellResource(resource, user, amount, RESET_RESOURCES.get(clickedItemType));
-                }
-            }.runTaskAsynchronously(Taikon.getPlugin());
+        switch (clickedItem.getType()) {
+            case WHITE_TULIP:
+                sell(new ItemStack(Material.WHITE_TULIP),1);
+                break;
+            case OAK_LOG:
+                sell(new ItemStack(Material.OAK_LOG),5);
+                break;
+            case STONE:
+                sell(new ItemStack(Material.STONE),10);
+                break;
+            case SAND:
+                sell(new ItemStack(Material.SAND),15);
+                break;
         }
     }
 
     @Override
     public void setMenuItems() {
-        ItemStack whiteTulip = MenuUtils.createMenuItem(Material.WHITE_TULIP, "1");
-        ItemStack oakLog = MenuUtils.createMenuItem(Material.OAK_LOG, "5");
-        ItemStack stone = MenuUtils.createMenuItem(Material.STONE, "10");
-        ItemStack sand = MenuUtils.createMenuItem(Material.SAND, "15");
+        ItemStack whiteTulip = MenuUtils.createMenuItemWithLore(
+                Material.WHITE_TULIP,
+                "§d✦ §fБелый тюльпан §d✦",
+                "§8▸ §7Цена: §a1 монета",
+                null
+        );
+
+        ItemStack oakLog = MenuUtils.createMenuItemWithLore(
+                Material.OAK_LOG,
+                "§6✦ §eДубовое бревно §6✦",
+                "§8▸ §7Цена: §a5 монет",
+                null
+        );
+
+        ItemStack stone = MenuUtils.createMenuItemWithLore(
+                Material.STONE,
+                "§7✦ §fКамень §7✦",
+                "§8▸ §7Цена: §a10 монет",
+                null
+        );
+
+        ItemStack sand = MenuUtils.createMenuItemWithLore(
+                Material.SAND,
+                "§e✦ §fПесок §e✦",
+                "§8▸ §7Цена: §a15 монет",
+                null
+        );
 
         inventory.setItem(10, whiteTulip);
         inventory.setItem(12, oakLog);
@@ -94,10 +123,28 @@ public class SellResourceMenu extends MenuManager {
     }
 
 
-    private void sellResource(Resource resource, User user, int amount, Consumer<Resource> resetResource) {
-        user.setBalance(user.getBalance().add(new LargeNumber(String.valueOf(amount))));
+    private void sellResource(Resource resource, User user, int price, Consumer<Resource> resetResource) {
+        user.setBalance(user.getBalance().add(new LargeNumber(String.valueOf(price))));
         resetResource.accept(resource);
         userDB.update(user);
         resourceDB.update(resource);
+    }
+    private void sell(ItemStack itemSell, int price) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Material material = itemSell.getType();
+                Consumer<Resource> resetConsumer = RESET_RESOURCES.get(material);
+
+                if (resetConsumer == null) {
+                    return;
+                }
+
+                Resource resource = resourceDB.read(player.getUniqueId());
+                User user = userDB.read(player.getUniqueId());
+
+                sellResource(resource, user, price, resetConsumer);
+            }
+        }.runTaskAsynchronously(Taikon.getPlugin());
     }
 }

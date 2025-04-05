@@ -20,7 +20,10 @@ public class AddIncomeTask extends BukkitRunnable {
     public void run() {
         User user = userDB.read(player.getUniqueId());
 
-        user.setBalance(user.getBalance().add(user.getIncome()));
+
+
+        user.setBalance(user.getBalance().add(user.getIncome()
+                .multiply(new LargeNumber(String.valueOf(user.getIncomeMultiplier())))));
         userDB.update(user);
 
     }

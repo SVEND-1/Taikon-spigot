@@ -68,7 +68,7 @@ public class PlayerJoinListener implements Listener {
             @Override
             public void run() {
                 if (userDB.read(player.getUniqueId()) == null) {
-                    User user = new User(player.getUniqueId(), player.getDisplayName(), new LargeNumber("0"), new LargeNumber("0"),1.0);
+                    User user = new User(player.getUniqueId(), player.getDisplayName(), new LargeNumber("0"), new LargeNumber("0"),1);
                     userDB.insert(user);
 
                     Resource resource = new Resource(0, 0, 0, 0, player.getUniqueId());

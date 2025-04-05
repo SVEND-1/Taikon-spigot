@@ -11,23 +11,28 @@ public class User {
     private String name;
     private LargeNumber income;
     private LargeNumber balance;
-    private double incomeMultiplier;
+    private int incomeMultiplier;
 
     public User() {
     }
 
-    public User(UUID id, String name, LargeNumber income, LargeNumber balance,double incomeMultiplier) {
+    public User(UUID id, String name, LargeNumber income, LargeNumber balance,int incomeMultiplier) {
         this.id = id;
         this.name = name;
         this.income = income;
         this.balance = balance;
         this.incomeMultiplier = incomeMultiplier;
     }
-    public double getIncomeMultiplier() {
+
+    public LargeNumber getActiveIncome(){//Доход с бустами
+        return new LargeNumber(income.toString()).multiply(new LargeNumber(String.valueOf(incomeMultiplier)));
+    }
+
+    public int getIncomeMultiplier() {
         return incomeMultiplier;
     }
 
-    public void setIncomeMultiplier(double incomeMultiplier) {
+    public void setIncomeMultiplier(int incomeMultiplier) {
         this.incomeMultiplier = incomeMultiplier;
     }
 

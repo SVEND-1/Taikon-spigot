@@ -6,6 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 import svend.taikon.DataBase.ModelDAO.ResourceDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
+import svend.taikon.LargeNumber;
 import svend.taikon.Model.Resource;
 import svend.taikon.Model.User;
 
@@ -47,7 +48,9 @@ public class UpdateScoreboardTask extends BukkitRunnable {
 
         // Добавляем обновленные записи
         objective.getScore("§aИмя: §e" + user.getName()).setScore(8);
-        objective.getScore("§bДоход: §e" + user.getIncome()).setScore(7);
+        objective.getScore("§bДоход: §e" + user.getIncome()
+                        .multiply(new LargeNumber(String.valueOf(user.getIncomeMultiplier()))))
+                        .setScore(7);
         objective.getScore("§cБаланс: §e" + user.getBalance()).setScore(6);
         objective.getScore(" ").setScore(5);
         objective.getScore("Цветов: " + resource.getFlowers()).setScore(4);

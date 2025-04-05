@@ -10,7 +10,7 @@ import svend.taikon.Admin.Test;
 import svend.taikon.Menu.BuildingsMenu.BakeryMenu;
 import svend.taikon.Menu.BuildingsMenu.GardenMenu;
 import svend.taikon.Menu.BuildingsMenu.RestaurantMenu;
-import svend.taikon.Menu.DonatMenu;
+import svend.taikon.Donat.DonatMenu;
 import svend.taikon.Menu.SellResourceMenu;
 import svend.taikon.Menu.ToolsMenu;
 

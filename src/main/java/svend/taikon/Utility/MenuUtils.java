@@ -11,6 +11,8 @@ import svend.taikon.LargeNumber;
 import svend.taikon.Model.Buildings.Building;
 import svend.taikon.Model.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class MenuUtils {
@@ -47,6 +49,20 @@ public class MenuUtils {
     public static ItemStack createMenuItem(Material material, String name) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public static ItemStack createMenuItemWithLore(Material material, String name,String price,String profit) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+
+        List<String> lore = new ArrayList<>();
+        lore.add(price);
+        lore.add(profit);
+
+        meta.setLore(lore);
         meta.setDisplayName(name);
         item.setItemMeta(meta);
         return item;

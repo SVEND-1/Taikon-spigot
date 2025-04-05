@@ -16,7 +16,14 @@ commands:
   localBan:
     description: "Забанить игроков с указанным сроком и причиной"
 
+  bust:
+    description: "Test busta"
 
+#отключение достижений
+advancements:
+  disable-saving: true
+  disabled:
+    - '*'
 
 permissions:
   permissions.Permissions:
