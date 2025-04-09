@@ -33,10 +33,7 @@ public class NPCFactory {
         ServerPlayer npc = new ServerPlayer(server, level, gameProfile);
         npc.setPos(x, y, z);
 
-        // Добавляем NPC в мир
-        //level.addEntity(npc);
 
-        // Добавляем NPC в HashMap для управления
         npcMap.put(npc.getId(), name);
 
         return npc;

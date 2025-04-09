@@ -1,14 +1,10 @@
 package svend.taikon;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import svend.taikon.Admin.BanPlayerCommand;
-import svend.taikon.Admin.Test;
 import svend.taikon.Command.OpenMenuCommand;
 import svend.taikon.Command.SpawnCommand;
 import svend.taikon.DataBase.ConnectToMongoDB;
-import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.Listener.*;
 import svend.taikon.NPC.NPCClickHandler;
 import svend.taikon.NPC.NPCCreate;

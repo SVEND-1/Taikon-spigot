@@ -25,7 +25,6 @@ public class AdminMenu extends MenuManager {
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
-        //Todo: включить бустер,забанить игрока на день,выдать какой то донат игроку,телепортироваться к определенному игроку и тд
         e.setCancelled(true);
 
         if (!e.getView().getTitle().equals(getMenuName())) {
@@ -50,10 +49,6 @@ public class AdminMenu extends MenuManager {
                 AdminBanMenu adminBanMenu = new AdminBanMenu(player);
                 adminBanMenu.open();
                 break;
-            case GOLD_BLOCK:
-                break;
-            case DIAMOND:
-                break;
             case ENDER_PEARL:
                 AdminTeleportMenu adminTeleportMenu = new AdminTeleportMenu(player);
                 adminTeleportMenu.open();
@@ -68,15 +63,11 @@ public class AdminMenu extends MenuManager {
     @Override
     public void setMenuItems() {
         ItemStack banHead = MenuUtils.createMenuItem(Material.PLAYER_HEAD,"Бан игрока");
-        ItemStack bust = MenuUtils.createMenuItem(Material.GOLD_BLOCK,"Включить бустер");
-        ItemStack donatGivePlayer = MenuUtils.createMenuItem(Material.DIAMOND,"Выдать игроку донат");
         ItemStack teleportToPlayer = MenuUtils.createMenuItem(Material.ENDER_PEARL,"Телепортироваться к игроку");
         ItemStack statisticPlayer = MenuUtils.createMenuItem(Material.PAPER,"Статистика игроков");
 
-        inventory.setItem(2,banHead);
-        inventory.setItem(3,bust);
-        inventory.setItem(4,donatGivePlayer);
-        inventory.setItem(5,teleportToPlayer);
-        inventory.setItem(6,statisticPlayer);
+        inventory.setItem(3,banHead);
+        inventory.setItem(4,teleportToPlayer);
+        inventory.setItem(5,statisticPlayer);
     }
 }

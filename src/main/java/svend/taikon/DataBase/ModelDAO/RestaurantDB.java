@@ -19,9 +19,11 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class RestaurantDB implements DAO<Restaurant, UUID> {
     private final MongoCollection<Document> restaurantCollection;
+    private final ProductDB productDB;
 
     public RestaurantDB(MongoDatabase database) {
         this.restaurantCollection = database.getCollection("Restaurant");
+        this.productDB = new ProductDB(database);
     }
 
     @Override
@@ -63,15 +65,24 @@ public class RestaurantDB implements DAO<Restaurant, UUID> {
                 .append("price", restaurant.getPrice().getValue().toString())
                 .append("upIncome", restaurant.getUpIncome().getValue().toString())
                 .append("level", restaurant.getLevel())
+                .append("firstProduct", restaurant.getFirstProduct() != null ?
+                        productDB.createProductDocument(restaurant.getFirstProduct()) : null)
+                .append("secondProduct", restaurant.getSecondProduct() != null ?
+                        productDB.createProductDocument(restaurant.getSecondProduct()) : null)
                 .append("userId", restaurant.getUserId().toString());
     }
 
     private Restaurant mapDocumentToRestaurant(Document doc) {
+        Document firstProductDoc = doc.get("firstProduct", Document.class);
+        Document secondProductDoc = doc.get("secondProduct", Document.class);
+
         return new Restaurant(
                 doc.getString("name"),
                 new LargeNumber(doc.getString("price")),
                 new LargeNumber(doc.getString("upIncome")),
                 doc.getInteger("level"),
+                firstProductDoc != null ? productDB.mapDocumentToProduct(firstProductDoc) : null,
+                secondProductDoc != null ? productDB.mapDocumentToProduct(secondProductDoc) : null,
                 UUID.fromString(doc.getString("userId"))
         );
     }

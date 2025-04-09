@@ -38,12 +38,20 @@ public class MenuUtils {
         }
     }
 
-    public static void ItemProfitableBuildings(Inventory inventory){
-        ItemStack buy = createMenuItem(Material.GREEN_STAINED_GLASS,"Купить");
+    public static void ItemProfitableBuildings(Inventory inventory,Building building){
+        ItemStack buy = createMenuItemWithLore(Material.GREEN_STAINED_GLASS,"Купить","Цена: "  ,"Доход: " );
+        ItemStack firstProduct = createMenuItemWithLore(Material.OBSIDIAN,"Улучшить первого продукта","Цена: " ,"");
+        ItemStack sellFirstProduct = createMenuItemWithLore(Material.FEATHER,"Продать один продукт","Цена: " ,"");
+        ItemStack secondProduct = createMenuItemWithLore(Material.PAPER,"Улучшить второго продукт","Цена: " ,"");
+        ItemStack sellSecondProduct = createMenuItemWithLore(Material.ARROW,"Продать один продукт","Цена: " ,"");
         ItemStack exit = createMenuItem(Material.RED_STAINED_GLASS,"Выйти");
 
-        inventory.setItem(2,buy);
-        inventory.setItem(6,exit);
+        inventory.setItem(9,buy);
+        inventory.setItem(11,firstProduct);
+        inventory.setItem(12,sellFirstProduct);
+        inventory.setItem(14,secondProduct);
+        inventory.setItem(15,sellSecondProduct);
+        inventory.setItem(17,exit);
     }
 
     public static ItemStack createMenuItem(Material material, String name) {

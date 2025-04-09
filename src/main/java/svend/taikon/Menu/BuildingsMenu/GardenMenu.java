@@ -18,6 +18,7 @@ public class GardenMenu extends MenuManager {
     private final UserDB userDB;
     private final GardenDB gardenDB;
     private final ConnectToMongoDB database;
+    private Garden garden;
     public GardenMenu(Player player) {
         super(player);
         this.database = new ConnectToMongoDB();
@@ -56,7 +57,7 @@ public class GardenMenu extends MenuManager {
                 switch (clickedItemType) {
                     case GREEN_STAINED_GLASS:
                         User user = userDB.read(player.getUniqueId());
-                        Garden garden = gardenDB.read(player.getUniqueId());
+                        garden = gardenDB.read(player.getUniqueId());
 
                         MenuUtils.handleBuildingUpgrade(player,garden,gardenDB,user,userDB,new LargeNumber("7"));
 
@@ -71,6 +72,6 @@ public class GardenMenu extends MenuManager {
 
     @Override
     public void setMenuItems() {
-        MenuUtils.ItemProfitableBuildings(inventory);
+        MenuUtils.ItemProfitableBuildings(inventory,garden);
     }
 }

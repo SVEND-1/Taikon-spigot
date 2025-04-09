@@ -11,16 +11,15 @@ public class AddIncomeTask extends BukkitRunnable {
     private final Player player;
     private final ConnectToMongoDB database;
     private final UserDB userDB;
+    private final User user;
     public AddIncomeTask(Player player){
         this.player = player;
         this.database = new ConnectToMongoDB();
         this.userDB = new UserDB(database.getDatabase());
+        this.user = userDB.read(player.getUniqueId());
     }
     @Override
     public void run() {
-        User user = userDB.read(player.getUniqueId());
-
-
 
         user.setBalance(user.getBalance().add(user.getIncome()
                 .multiply(new LargeNumber(String.valueOf(user.getIncomeMultiplier())))));

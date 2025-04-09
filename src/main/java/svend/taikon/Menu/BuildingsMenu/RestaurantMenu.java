@@ -18,6 +18,7 @@ public class RestaurantMenu extends MenuManager {
     private final UserDB userDB;
     private final RestaurantDB restaurantDB;
     private final ConnectToMongoDB database;
+    private Restaurant restaurant;
     public RestaurantMenu(Player player) {
         super(player);
         this.database = new ConnectToMongoDB();
@@ -71,6 +72,6 @@ public class RestaurantMenu extends MenuManager {
 
     @Override
     public void setMenuItems() {
-        MenuUtils.ItemProfitableBuildings(inventory);
+        MenuUtils.ItemProfitableBuildings(inventory,restaurant);
     }
 }

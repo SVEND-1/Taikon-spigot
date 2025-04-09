@@ -6,18 +6,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
-import svend.taikon.DataBase.ModelDAO.BakeryDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.Menu.MenuManager;
 import svend.taikon.Model.User;
-import svend.taikon.Taikon;
 import svend.taikon.Utility.AdminUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class AdminStatisticMenu extends MenuManager {
     private int currentPage;

@@ -31,7 +31,6 @@ public class LargeNumber implements Comparable<LargeNumber> {
         return new LargeNumber(this.value.divide(other.value).toString());
     }
 
-    // Методы сравнения
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,7 +66,6 @@ public class LargeNumber implements Comparable<LargeNumber> {
         return this.compareTo(other) >= 0;
     }
 
-    // Форматирование (остается без изменений)
     public String format() {
         int maxPower = 63;
         String[] suffixes = new String[maxPower/3 + 1];

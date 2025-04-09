@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import svend.taikon.Taikon;
+import svend.taikon.Utility.AdminUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class CreateAndPasteBuildingsCommand implements CommandExecutor {
         Player player = (Player) commandSender;
         String param = strings[0].toLowerCase();
 
-        if(player.hasPermission("permissions.Permissions") || player.isOp()){
+        if(AdminUtils.isAdmin(player)){
             player.sendMessage("Это только для админов");
             return true;
         }

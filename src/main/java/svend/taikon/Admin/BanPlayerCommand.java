@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class BanPlayerCommand implements CommandExecutor {
-    //Todo: Бан который можно настроить там на определенное время
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = (Player) commandSender;

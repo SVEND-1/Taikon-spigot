@@ -19,9 +19,11 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class BakeryDB implements DAO<Bakery, UUID> {
     private final MongoCollection<Document> bakeryCollection;
+    private final ProductDB productDB;
 
     public BakeryDB(MongoDatabase database) {
         this.bakeryCollection = database.getCollection("Bakery");
+        this.productDB = new ProductDB(database);
     }
 
     @Override
@@ -63,15 +65,25 @@ public class BakeryDB implements DAO<Bakery, UUID> {
                 .append("price", bakery.getPrice().getValue().toString())
                 .append("upIncome", bakery.getUpIncome().getValue().toString())
                 .append("level", bakery.getLevel())
+                .append("firstProduct", bakery.getFirstProduct() != null ?
+                        productDB.createProductDocument(bakery.getFirstProduct()) : null)
+                .append("secondProduct", bakery.getSecondProduct() != null ?
+                        productDB.createProductDocument(bakery.getSecondProduct()) : null)
                 .append("userId", bakery.getUserId().toString());
     }
 
     private Bakery mapDocumentToBakery(Document doc) {
+
+        Document firstProductDoc = doc.get("firstProduct", Document.class);
+        Document secondProductDoc = doc.get("secondProduct", Document.class);
+
         return new Bakery(
                 doc.getString("name"),
                 new LargeNumber(doc.getString("price")),
                 new LargeNumber(doc.getString("upIncome")),
                 doc.getInteger("level"),
+                firstProductDoc != null ? productDB.mapDocumentToProduct(firstProductDoc) : null,
+                secondProductDoc != null ? productDB.mapDocumentToProduct(secondProductDoc) : null,
                 UUID.fromString(doc.getString("userId"))
         );
     }
