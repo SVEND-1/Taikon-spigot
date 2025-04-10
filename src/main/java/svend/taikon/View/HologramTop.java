@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import svend.taikon.DataBase.ConnectToMongoDB;
+import svend.taikon.DataBase.DataBaseManager;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.Model.User;
 
@@ -15,11 +16,11 @@ import java.util.List;
 
 public class HologramTop {
     private final UserDB userDB;
-    private final ConnectToMongoDB database;
+    private final DataBaseManager dataBaseManager;
 
     public HologramTop() {
-        this.database = new ConnectToMongoDB();
-        this.userDB = new UserDB(database.getDatabase());
+        this.dataBaseManager = DataBaseManager.getInstance();
+        this.userDB = dataBaseManager.getUserDB();
     }
 
     public List<ArmorStand> create() {

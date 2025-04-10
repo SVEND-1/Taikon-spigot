@@ -1,29 +1,35 @@
 package svend.taikon.Task;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
+import svend.taikon.DataBase.DataBaseManager;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.LargeNumber;
 import svend.taikon.Model.User;
 
+import static svend.taikon.Task.ProductsTasks.ProductTaskManager.stopTask;
+
 public class AddIncomeTask extends BukkitRunnable {
     private final Player player;
-    private final ConnectToMongoDB database;
+    private final DataBaseManager dataBaseManager;
     private final UserDB userDB;
-    private final User user;
     public AddIncomeTask(Player player){
         this.player = player;
-        this.database = new ConnectToMongoDB();
-        this.userDB = new UserDB(database.getDatabase());
-        this.user = userDB.read(player.getUniqueId());
+        this.dataBaseManager = DataBaseManager.getInstance();
+        this.userDB = dataBaseManager.getUserDB();
     }
     @Override
     public void run() {
+       User user = userDB.read(player.getUniqueId());
 
         user.setBalance(user.getBalance().add(user.getIncome()
                 .multiply(new LargeNumber(String.valueOf(user.getIncomeMultiplier())))));
         userDB.update(user);
 
+        if (!Bukkit.getPlayer(player.getUniqueId()).isOnline()) {
+            stopTask(player.getUniqueId());
+        }
     }
 }

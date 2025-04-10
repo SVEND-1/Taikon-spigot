@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import svend.taikon.DataBase.ConnectToMongoDB;
+import svend.taikon.DataBase.DataBaseManager;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.Menu.MenuManager;
 import svend.taikon.Model.User;
@@ -18,13 +19,13 @@ import java.util.List;
 public class AdminStatisticMenu extends MenuManager {
     private int currentPage;
     private final UserDB userDB;
-    private final ConnectToMongoDB database;
+    private final DataBaseManager dataBaseManager;
 
     public AdminStatisticMenu(Player player) {
         super(player);
         this.currentPage = 0;
-        this.database = new ConnectToMongoDB();
-        this.userDB = new UserDB(database.getDatabase());
+        this.dataBaseManager = DataBaseManager.getInstance();
+        this.userDB = dataBaseManager.getUserDB();
     }
 
     @Override

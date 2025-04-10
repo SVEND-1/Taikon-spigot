@@ -72,6 +72,7 @@ public class GardenDB implements DAO<Garden, UUID> {
                         productDB.createProductDocument(garden.getFirstProduct()) : null)
                 .append("secondProduct", garden.getSecondProduct() != null ?
                         productDB.createProductDocument(garden.getSecondProduct()) : null)
+                .append("buildingsConstructed",garden.isBuildingsConstructed())
                 .append("userId", garden.getUserId().toString());
     }
 
@@ -86,6 +87,7 @@ public class GardenDB implements DAO<Garden, UUID> {
                 doc.getInteger("level"),
                 firstProductDoc != null ? productDB.mapDocumentToProduct(firstProductDoc) : null,
                 secondProductDoc != null ? productDB.mapDocumentToProduct(secondProductDoc) : null,
+                doc.getBoolean("buildingsConstructed"),
                 UUID.fromString(doc.getString("userId"))
         );
     }

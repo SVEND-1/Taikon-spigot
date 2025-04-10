@@ -69,6 +69,7 @@ public class RestaurantDB implements DAO<Restaurant, UUID> {
                         productDB.createProductDocument(restaurant.getFirstProduct()) : null)
                 .append("secondProduct", restaurant.getSecondProduct() != null ?
                         productDB.createProductDocument(restaurant.getSecondProduct()) : null)
+                .append("buildingsConstructed",restaurant.isBuildingsConstructed())
                 .append("userId", restaurant.getUserId().toString());
     }
 
@@ -83,6 +84,7 @@ public class RestaurantDB implements DAO<Restaurant, UUID> {
                 doc.getInteger("level"),
                 firstProductDoc != null ? productDB.mapDocumentToProduct(firstProductDoc) : null,
                 secondProductDoc != null ? productDB.mapDocumentToProduct(secondProductDoc) : null,
+                doc.getBoolean("buildingsConstructed"),
                 UUID.fromString(doc.getString("userId"))
         );
     }

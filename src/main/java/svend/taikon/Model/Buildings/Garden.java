@@ -10,7 +10,8 @@ public class Garden extends Building {
     public Garden() {
     }
 
-    public Garden(String name, LargeNumber price, LargeNumber upIncome, int level, Product firstProduct, Product secondProduct, UUID userId) {
-        super(name, price, upIncome, level, firstProduct, secondProduct, userId);
+    public Garden(String name, LargeNumber price, LargeNumber upIncome, int level, Product firstProduct, Product secondProduct, boolean buildingsConstructed, UUID userId) {
+        super(name, price, upIncome, level, firstProduct, secondProduct, buildingsConstructed, userId);
     }
+
 }

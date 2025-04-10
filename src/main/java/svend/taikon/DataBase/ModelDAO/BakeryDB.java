@@ -69,6 +69,7 @@ public class BakeryDB implements DAO<Bakery, UUID> {
                         productDB.createProductDocument(bakery.getFirstProduct()) : null)
                 .append("secondProduct", bakery.getSecondProduct() != null ?
                         productDB.createProductDocument(bakery.getSecondProduct()) : null)
+                .append("buildingsConstructed",bakery.isBuildingsConstructed())
                 .append("userId", bakery.getUserId().toString());
     }
 
@@ -84,6 +85,7 @@ public class BakeryDB implements DAO<Bakery, UUID> {
                 doc.getInteger("level"),
                 firstProductDoc != null ? productDB.mapDocumentToProduct(firstProductDoc) : null,
                 secondProductDoc != null ? productDB.mapDocumentToProduct(secondProductDoc) : null,
+                doc.getBoolean("buildingsConstructed"),
                 UUID.fromString(doc.getString("userId"))
         );
     }

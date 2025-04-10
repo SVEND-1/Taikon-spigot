@@ -1,10 +1,10 @@
 package svend.taikon.Menu.BuildingsMenu;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.DataBaseManager;
 import svend.taikon.DataBase.ModelDAO.BakeryDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
@@ -14,9 +14,12 @@ import svend.taikon.Model.Buildings.Bakery;
 import svend.taikon.Model.Product;
 import svend.taikon.Model.User;
 import svend.taikon.Taikon;
-import svend.taikon.Task.ProductTask;
-import svend.taikon.Task.ProductTaskManager;
+import svend.taikon.Task.ProductsTasks.BakeryProductTask;
+import svend.taikon.Task.ProductsTasks.ProductTaskManager;
 import svend.taikon.Utility.MenuUtils;
+import svend.taikon.WorldEdit.WorldEditManager;
+
+import java.io.File;
 
 public class BakeryMenu extends MenuManager {
     private final UserDB userDB;
@@ -113,14 +116,25 @@ public class BakeryMenu extends MenuManager {
             player.sendMessage("У вас максимальная прокачка");
             return;
         }
+        if (!bakery.isBuildingsConstructed()) {
+            final File file = new File(Taikon.getPlugin().getDataFolder(), "schematic/bakery.schem");
+            Location location = new Location(player.getWorld(), 109, 99, 136);
+            WorldEditManager.paste(location, file);
+            bakery.setBuildingsConstructed(true);
+        }
+
+        if(product.isOpen()) {
+            product.setLvl(2);
+        }
 
         product.setOpen(true);
-        product.setLvl(2);
         bakeryDB.update(bakery);
+
+        player.sendMessage("§aЗдания улучшено");
 
         // Запускаем задачу только если она еще не запущена
         if (!ProductTaskManager.hasTask(player.getUniqueId())) {
-            ProductTask task = new ProductTask(player.getUniqueId(), bakeryDB, userDB);
+            BakeryProductTask task = new BakeryProductTask(player.getUniqueId(), bakeryDB, userDB);
             task.runTaskTimerAsynchronously(Taikon.getPlugin(), 0, 100);
             ProductTaskManager.addTask(player.getUniqueId(), task);
         }

@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
+import svend.taikon.DataBase.DataBaseManager;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.LargeNumber;
 import svend.taikon.Model.User;
@@ -16,7 +17,7 @@ import svend.taikon.Utility.MenuUtils;
 public class ToolsMenu extends MenuManager {
 
     private final UserDB userDB;
-    private final ConnectToMongoDB database;
+    private final DataBaseManager dataBaseManager;
 
     private ItemStack woodenAxe, stoneAxe, ironAxe;
     private ItemStack woodenPickaxe, stonePickaxe, ironPickaxe;
@@ -24,8 +25,8 @@ public class ToolsMenu extends MenuManager {
 
     public ToolsMenu(Player player) {
         super(player);
-        this.database = new ConnectToMongoDB();
-        this.userDB = new UserDB(database.getDatabase());
+        this.dataBaseManager = DataBaseManager.getInstance();
+        this.userDB = dataBaseManager.getUserDB();
         initializeItems();
     }
 

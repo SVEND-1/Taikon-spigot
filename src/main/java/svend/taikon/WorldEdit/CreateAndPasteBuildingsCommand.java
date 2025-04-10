@@ -27,7 +27,7 @@ public class CreateAndPasteBuildingsCommand implements CommandExecutor {
         Player player = (Player) commandSender;
         String param = strings[0].toLowerCase();
 
-        if(AdminUtils.isAdmin(player)){
+        if(!AdminUtils.isAdmin(player)){
             player.sendMessage("Это только для админов");
             return true;
         }

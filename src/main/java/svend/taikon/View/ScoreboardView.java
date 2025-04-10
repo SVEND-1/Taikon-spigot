@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scoreboard.Scoreboard;
 import svend.taikon.DataBase.ConnectToMongoDB;
+import svend.taikon.DataBase.DataBaseManager;
 import svend.taikon.DataBase.ModelDAO.ResourceDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.Taikon;
@@ -15,11 +16,11 @@ import svend.taikon.Task.UpdateScoreboardTask;
 public class ScoreboardView implements Listener {
     private final UserDB userDB;
     private final ResourceDB resourceDB;
-    private final ConnectToMongoDB database;
+    private final DataBaseManager dataBaseManager;
     public ScoreboardView() {
-        this.database = new ConnectToMongoDB();
-        this.userDB = new UserDB(database.getDatabase());
-        this.resourceDB = new ResourceDB(database.getDatabase());
+        this.dataBaseManager = DataBaseManager.getInstance();
+        this.userDB = dataBaseManager.getUserDB();
+        this.resourceDB = dataBaseManager.getResourceDB();
     }
 
 

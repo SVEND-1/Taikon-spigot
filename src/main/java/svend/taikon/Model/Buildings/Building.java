@@ -13,16 +13,18 @@ public class Building {
     private UUID userId;
     private Product firstProduct;
     private Product secondProduct;
+    private boolean buildingsConstructed;
 
     public Building() {}
 
-    public Building(String name, LargeNumber price, LargeNumber upIncome, int level,Product firstProduct,Product secondProduct, UUID userId) {
+    public Building(String name, LargeNumber price, LargeNumber upIncome, int level,Product firstProduct,Product secondProduct,boolean buildingsConstructed, UUID userId) {
         this.name = name;
         this.price = price;
         this.upIncome = upIncome;
         this.level = level;
         this.firstProduct = firstProduct;
         this.secondProduct = secondProduct;
+        this.buildingsConstructed = buildingsConstructed;
         this.userId = userId;
     }
 
@@ -72,6 +74,14 @@ public class Building {
 
     public void setSecondProduct(Product secondProduct) {
         this.secondProduct = secondProduct;
+    }
+
+    public boolean isBuildingsConstructed() {
+        return buildingsConstructed;
+    }
+
+    public void setBuildingsConstructed(boolean buildingsConstructed) {
+        this.buildingsConstructed = buildingsConstructed;
     }
 
     public UUID getUserId() {

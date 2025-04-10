@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
+import svend.taikon.DataBase.DataBaseManager;
 import svend.taikon.DataBase.ModelDAO.RestaurantDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.LargeNumber;
@@ -17,13 +18,13 @@ import svend.taikon.Utility.MenuUtils;
 public class RestaurantMenu extends MenuManager {
     private final UserDB userDB;
     private final RestaurantDB restaurantDB;
-    private final ConnectToMongoDB database;
+    private final DataBaseManager dataBaseManager;
     private Restaurant restaurant;
     public RestaurantMenu(Player player) {
         super(player);
-        this.database = new ConnectToMongoDB();
-        this.userDB = new UserDB(database.getDatabase());
-        this.restaurantDB = new RestaurantDB(database.getDatabase());
+        this.dataBaseManager = DataBaseManager.getInstance();
+        this.userDB = dataBaseManager.getUserDB();
+        this.restaurantDB = dataBaseManager.getRestaurantDB();
     }
 
     @Override

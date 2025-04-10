@@ -91,21 +91,21 @@ public class PlayerJoinListener implements Listener {
             Product firstProductBakery = new Product("Пирожок", new LargeNumber("1000"),0, 1,500, false);
             Product secondProductBakery = new Product("Торт", new LargeNumber("12312313"),0,1,500, false);
             Bakery bakery = new Bakery("Пекарня", new LargeNumber("75"), new LargeNumber("1"), 1,
-                    firstProductBakery, secondProductBakery, playerId);
+                    firstProductBakery, secondProductBakery,false, playerId);
             bakeryDB.insert(bakery);
 
             // Сад
             Product firstProductGarden = new Product("Роза", new LargeNumber("13123"),0, 1,500, false);
             Product secondProductGarden = new Product("Букет", new LargeNumber("312313123"),0, 1,500, false);
             Garden garden = new Garden("Сад", new LargeNumber("350"), new LargeNumber("5"), 1,
-                    firstProductGarden, secondProductGarden, playerId);
+                    firstProductGarden, secondProductGarden, false,playerId);
             gardenDB.insert(garden);
 
             // Ресторан
             Product firstProductRestaurant = new Product("Салат", new LargeNumber("123312"),0, 1,500, false);
             Product secondProductRestaurant = new Product("Краб", new LargeNumber("1231231231"),0, 1,500, false);
             Restaurant restaurant = new Restaurant("Ресторан", new LargeNumber("1000"), new LargeNumber("10"), 1,
-                    firstProductRestaurant, secondProductRestaurant, playerId);
+                    firstProductRestaurant, secondProductRestaurant,false, playerId);
             restaurantDB.insert(restaurant);
         } catch (Exception e) {
 

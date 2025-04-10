@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
+import svend.taikon.DataBase.DataBaseManager;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.LargeNumber;
 import svend.taikon.Menu.MenuManager;
@@ -15,11 +16,11 @@ import svend.taikon.Utility.MenuUtils;
 
 public class DonatMenu extends MenuManager {
     private final UserDB userDB;
-    private final ConnectToMongoDB database;
+    private final DataBaseManager dataBaseManager;
     public DonatMenu(Player player) {
         super(player);
-        this.database = new ConnectToMongoDB();
-        this.userDB = new UserDB(database.getDatabase());
+        this.dataBaseManager = DataBaseManager.getInstance();
+        this.userDB = dataBaseManager.getUserDB();
     }
 
     @Override

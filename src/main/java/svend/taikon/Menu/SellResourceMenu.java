@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
+import svend.taikon.DataBase.DataBaseManager;
 import svend.taikon.DataBase.ModelDAO.ResourceDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.LargeNumber;
@@ -20,7 +21,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class SellResourceMenu extends MenuManager {
-    private final ConnectToMongoDB database;
+    private final DataBaseManager dataBaseManager;
     private final ResourceDB resourceDB;
     private final UserDB userDB;
     private static final Map<Material, Function<Resource, Integer>> RESOURCE_PRICES = new HashMap<>();
@@ -40,9 +41,9 @@ public class SellResourceMenu extends MenuManager {
 
     public SellResourceMenu(Player player) {
         super(player);
-        this.database = new ConnectToMongoDB();
-        this.resourceDB = new ResourceDB(database.getDatabase());
-        this.userDB = new UserDB(database.getDatabase());
+        this.dataBaseManager = DataBaseManager.getInstance();
+        this.resourceDB = dataBaseManager.getResourceDB();
+        this.userDB = dataBaseManager.getUserDB();
     }
 
     @Override
@@ -72,16 +73,16 @@ public class SellResourceMenu extends MenuManager {
 
         switch (clickedItem.getType()) {
             case WHITE_TULIP:
-                sell(new ItemStack(Material.WHITE_TULIP),1);
+                sell(new ItemStack(Material.WHITE_TULIP));
                 break;
             case OAK_LOG:
-                sell(new ItemStack(Material.OAK_LOG),5);
+                sell(new ItemStack(Material.OAK_LOG));
                 break;
             case STONE:
-                sell(new ItemStack(Material.STONE),10);
+                sell(new ItemStack(Material.STONE));
                 break;
             case SAND:
-                sell(new ItemStack(Material.SAND),15);
+                sell(new ItemStack(Material.SAND));
                 break;
         }
     }
@@ -123,27 +124,49 @@ public class SellResourceMenu extends MenuManager {
     }
 
 
-    private void sellResource(Resource resource, User user, int price, Consumer<Resource> resetResource) {
-        user.setBalance(user.getBalance().add(new LargeNumber(String.valueOf(price))));
-        resetResource.accept(resource);
-        userDB.update(user);
-        resourceDB.update(resource);
-    }
-    private void sell(ItemStack itemSell, int price) {
+    private void sell(ItemStack itemSell) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Material material = itemSell.getType();
-                Consumer<Resource> resetConsumer = RESET_RESOURCES.get(material);
+                try {
+                    Material material = itemSell.getType();
 
-                if (resetConsumer == null) {
-                    return;
+                    Function<Resource, Integer> getAmountFunc = RESOURCE_PRICES.get(material);
+                    Consumer<Resource> resetFunc = RESET_RESOURCES.get(material);
+
+                    if (getAmountFunc == null || resetFunc == null) return;
+
+                    Resource resource = resourceDB.read(player.getUniqueId());
+                    User user = userDB.read(player.getUniqueId());
+
+                    if (resource == null || user == null) {
+                        player.sendMessage("Ошибка данных");
+                        return;
+                    }
+
+                    int amount = getAmountFunc.apply(resource);
+                    if (amount <= 0) {
+                        player.sendMessage("§cНет ресурсов для продажи");
+                        return;
+                    }
+
+                    LargeNumber totalPrice = new LargeNumber(String.valueOf(amount));
+
+                    user.setBalance(user.getBalance().add(totalPrice));
+                    resetFunc.accept(resource);
+
+                    boolean success = userDB.update(user) && resourceDB.update(resource);
+
+                    if (success) {
+                        player.sendMessage("§aПродано! +" + totalPrice +" монет");
+                    } else {
+                        player.sendMessage("§cОшибка при сохранении");
+                    }
+
+                } catch (Exception e) {
+                    player.sendMessage("§cОшибка при продаже");
+                    e.printStackTrace();
                 }
-
-                Resource resource = resourceDB.read(player.getUniqueId());
-                User user = userDB.read(player.getUniqueId());
-
-                sellResource(resource, user, price, resetConsumer);
             }
         }.runTaskAsynchronously(Taikon.getPlugin());
     }

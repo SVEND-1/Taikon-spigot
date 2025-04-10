@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import svend.taikon.DataBase.ConnectToMongoDB;
+import svend.taikon.DataBase.DataBaseManager;
 import svend.taikon.DataBase.ModelDAO.ResourceDB;
 import svend.taikon.Model.Resource;
 import svend.taikon.Taikon;
@@ -22,13 +23,13 @@ import java.util.*;
 public class BreakBlockListener implements Listener {
 
     public static Set<Material> allowedBlocks = Collections.synchronizedSet(new HashSet<>());
-    private final ConnectToMongoDB database;
+    private final DataBaseManager dataBaseManager;
     private final ResourceDB resourceDB;
     private final Map<Location, Player> brokenBlocks = new HashMap<>(); // Трекинг "сломанных" блоков
 
     public BreakBlockListener() {
-        this.database = new ConnectToMongoDB();
-        this.resourceDB = new ResourceDB(database.getDatabase());
+        this.dataBaseManager = DataBaseManager.getInstance();
+        this.resourceDB = dataBaseManager.getResourceDB();
 
         allowedBlocks.add(Material.WHITE_TULIP);
         allowedBlocks.add(Material.OAK_LOG);

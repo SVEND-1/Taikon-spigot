@@ -22,7 +22,7 @@ public class MenuUtils {
                 user.setBalance(user.getBalance().subtract(building.getPrice()));
                 user.setIncome(user.getIncome().add(building.getUpIncome()));
 
-                LargeNumber upPrice = building.getPrice().divide(ratio);
+                LargeNumber upPrice = building.getPrice().divide(ratio);//начальную стоимость делим на ratio и прибавляем к начальной
                 building.setPrice(building.getPrice().add(upPrice));
                 building.setLevel(building.getLevel() + 1);
 
