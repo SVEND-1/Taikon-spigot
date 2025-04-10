@@ -13,7 +13,6 @@ import svend.taikon.Model.User;
 
 import java.util.UUID;
 
-import static svend.taikon.Task.ProductsTasks.ProductTaskManager.stopTask;
 
 public class UpdateScoreboardTask extends BukkitRunnable {
 
@@ -63,10 +62,6 @@ public class UpdateScoreboardTask extends BukkitRunnable {
         objective.getScore("Камня: " + resource.getStone()).setScore(2);
         objective.getScore("Песка: " + resource.getSand()).setScore(1);
 
-
-        if (!Bukkit.getPlayer(player.getUniqueId()).isOnline()) {
-            stopTask(player.getUniqueId());
-        }
     }
 }
 

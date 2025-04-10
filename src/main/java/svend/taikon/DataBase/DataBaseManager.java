@@ -1,6 +1,10 @@
 package svend.taikon.DataBase;
 
 import svend.taikon.DataBase.ModelDAO.*;
+import svend.taikon.DataBase.ModelDAO.Buildings.BakeryDB;
+import svend.taikon.DataBase.ModelDAO.Buildings.GardenDB;
+import svend.taikon.DataBase.ModelDAO.Buildings.ProductDB;
+import svend.taikon.DataBase.ModelDAO.Buildings.RestaurantDB;
 
 public class DataBaseManager {
     private final ConnectToMongoDB database;

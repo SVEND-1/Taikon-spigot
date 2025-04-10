@@ -9,7 +9,6 @@ import svend.taikon.DataBase.ModelDAO.UserDB;
 import svend.taikon.LargeNumber;
 import svend.taikon.Model.User;
 
-import static svend.taikon.Task.ProductsTasks.ProductTaskManager.stopTask;
 
 public class AddIncomeTask extends BukkitRunnable {
     private final Player player;
@@ -28,8 +27,5 @@ public class AddIncomeTask extends BukkitRunnable {
                 .multiply(new LargeNumber(String.valueOf(user.getIncomeMultiplier())))));
         userDB.update(user);
 
-        if (!Bukkit.getPlayer(player.getUniqueId()).isOnline()) {
-            stopTask(player.getUniqueId());
-        }
     }
 }

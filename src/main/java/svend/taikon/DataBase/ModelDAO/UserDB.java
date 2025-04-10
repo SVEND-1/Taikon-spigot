@@ -28,51 +28,102 @@ public class UserDB implements DAO<User, UUID> {
 
     @Override
     public boolean insert(User user) {
-        userCollection.insertOne(createUserDocument(user));
-        return true;
+        if (user == null) {
+            return false;
+        }
+
+        try {
+            userCollection.insertOne(createUserDocument(user));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public User read(UUID id) {
-        Document doc = userCollection.find(eq("_id", id.toString())).first();
-        return doc != null ? mapDocumentToUser(doc) : null;
+        try {
+            Document doc = userCollection.find(eq("_id", id.toString())).first();
+            return doc != null ? mapDocumentToUser (doc) : null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public boolean update(User user) {
-        UpdateResult result = userCollection.replaceOne(eq("_id", user.getId().toString()), createUserDocument(user));
-        return result.getModifiedCount() > 0;
+        if (user == null) {
+            return false;
+        }
+
+        try {
+            UpdateResult result = userCollection.replaceOne(
+                    eq("_id", user.getId().toString()),
+                    createUserDocument(user)
+            );
+            return result.getModifiedCount() > 0;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public boolean delete(User user) {
-        DeleteResult result = userCollection.deleteOne(eq("_id", user.getId().toString()));
-        return result.getDeletedCount() > 0;
+        if (user == null) {
+            return false;
+        }
+
+        try {
+            DeleteResult result = userCollection.deleteOne(eq("_id", user.getId().toString()));
+            return result.getDeletedCount() > 0;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public List<User> getAll() {
-        return StreamSupport.stream(userCollection.find().spliterator(), false)
-                .map(this::mapDocumentToUser)
-                .collect(Collectors.toList());
+        try {
+            return StreamSupport.stream(userCollection.find().spliterator(), false)
+                    .map(this::mapDocumentToUser )
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 
     private Document createUserDocument(User user) {
-        return new Document("_id", user.getId().toString())
-                .append("name", user.getName())
-                .append("income", user.getIncome().getValue().toString()) // Сериализуем LargeNumber
-                .append("balance", user.getBalance().getValue().toString()) // Сериализуем LargeNumber
-                .append("incomeMultiplier", user.getIncomeMultiplier());
+        if (user == null) {
+            return null;
+        }
+
+        try {
+            return new Document("_id", user.getId().toString())
+                    .append("name", user.getName())
+                    .append("income", user.getIncome().getValue().toString())
+                    .append("balance", user.getBalance().getValue().toString())
+                    .append("incomeMultiplier", user.getIncomeMultiplier());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    public User mapDocumentToUser(Document doc) {
-        return new User(
-                UUID.fromString(doc.getString("_id")),
-                doc.getString("name"),
-                new LargeNumber(doc.getString("income")),
-                new LargeNumber(doc.getString("balance")),
-                doc.getInteger("incomeMultiplier")
-        );
+    public User mapDocumentToUser (Document doc) {
+        if (doc == null) {
+            return null;
+        }
+
+        try {
+            return new User(
+                    UUID.fromString(doc.getString("_id")),
+                    doc.getString("name"),
+                    new LargeNumber(doc.getString("income")),
+                    new LargeNumber(doc.getString("balance")),
+                    doc.getInteger("incomeMultiplier")
+            );
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public List<User> top10() {
