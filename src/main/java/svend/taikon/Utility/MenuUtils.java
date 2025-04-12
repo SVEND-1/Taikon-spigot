@@ -38,7 +38,7 @@ public class MenuUtils {
         }
     }
 
-    public static void ItemProfitableBuildings(Inventory inventory,Building building){
+    public static void ItemProfitableBuildings(Inventory inventory){
         ItemStack buy = createMenuItemWithLore(Material.GREEN_STAINED_GLASS,"Купить","Цена: "  ,"Доход: " );
         ItemStack firstProduct = createMenuItemWithLore(Material.OBSIDIAN,"Улучшить первого продукта","Цена: " ,"");
         ItemStack sellFirstProduct = createMenuItemWithLore(Material.FEATHER,"Продать один продукт","Цена: " ,"");

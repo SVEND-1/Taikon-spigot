@@ -11,6 +11,8 @@ import svend.taikon.Menu.BuildingsMenu.BakeryMenu;
 import svend.taikon.Menu.BuildingsMenu.GardenMenu;
 import svend.taikon.Menu.BuildingsMenu.RestaurantMenu;
 import svend.taikon.Donat.DonatMenu;
+import svend.taikon.Menu.BuildingsMenu.Settings.BuildingMenuFactory;
+import svend.taikon.Menu.BuildingsMenu.Settings.BuildingType;
 import svend.taikon.Menu.SellResourceMenu;
 import svend.taikon.Menu.ToolsMenu;
 
@@ -20,6 +22,8 @@ public class OpenMenuCommand implements CommandExecutor {
 
         if(commandSender instanceof Player){
             Player player = (Player) commandSender;
+
+            BuildingType type = BuildingType.valueOf(strings[0].toUpperCase());
 
             if(strings[0].equalsIgnoreCase("Tools")){
                 ToolsMenu toolsMenu = new ToolsMenu(player);
@@ -38,8 +42,7 @@ public class OpenMenuCommand implements CommandExecutor {
                 bakeryMenu.open();
             }
             else if(strings[0].equalsIgnoreCase("Garden")){
-                GardenMenu gardenMenu = new GardenMenu(player);
-                gardenMenu.open();
+                BuildingMenuFactory.createMenu(player, type).open();
             }
             else if(strings[0].equalsIgnoreCase("Restaurant")){
                 RestaurantMenu restaurantMenu = new RestaurantMenu(player);
