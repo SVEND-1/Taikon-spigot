@@ -66,8 +66,7 @@ public class BakeryMenu extends BuildingMenu<Bakery> {
 
     @Override
     public void setMenuItems() {
-        MenuUtils.ItemProfitableBuildings(inventory);
-        // Здесь можно добавить специфичные для сада предметы в меню
+        MenuUtils.ItemProfitableBuildings(inventory,player,buildingDB,userDB);
     }
 
     @Override
@@ -131,7 +130,7 @@ public class BakeryMenu extends BuildingMenu<Bakery> {
 
     @Override
     protected void buildBuilding(Player player) {
-        final File file = new File(Taikon.getPlugin().getDataFolder(), "schematic/garden.schem");
+        final File file = new File(Taikon.getPlugin().getDataFolder(), "schematic/bakery.schem");
         Location location = new Location(player.getWorld(), 109, 99, 136);
         WorldEditManager.paste(location, file);
     }

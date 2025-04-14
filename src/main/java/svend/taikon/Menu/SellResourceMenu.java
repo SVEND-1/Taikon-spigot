@@ -9,6 +9,7 @@ import svend.taikon.DataBase.ConnectToMongoDB;
 import svend.taikon.DataBase.DataBaseManager;
 import svend.taikon.DataBase.ModelDAO.ResourceDB;
 import svend.taikon.DataBase.ModelDAO.UserDB;
+import svend.taikon.Donat.BusterResource;
 import svend.taikon.LargeNumber;
 import svend.taikon.Model.Resource;
 import svend.taikon.Model.User;
@@ -145,9 +146,21 @@ public class SellResourceMenu extends MenuManager {
                     }
 
                     int amount = getAmountFunc.apply(resource);
+
                     if (amount <= 0) {
                         player.sendMessage("§cНет ресурсов для продажи");
                         return;
+                    }
+
+                    if(material == Material.OAK_LOG) {
+                        amount *= BusterResource.isPlayerInSetWood(player) ? 2 : 1;
+                        amount *= BusterResource.globalBoostActiveWood ? 2 : 1;
+                    } else if (material == Material.STONE) {
+                        amount *= BusterResource.isPlayerInSetStone(player) ? 2 : 1;
+                        amount *= BusterResource.globalBoostActiveStone ? 2 : 1;
+                    } else if (material == Material.SAND){
+                        amount *= BusterResource.isPlayerInSetSand(player) ? 2 : 1;
+                        amount *= BusterResource.globalBoostActiveSand ? 2 : 1;
                     }
 
                     LargeNumber totalPrice = new LargeNumber(String.valueOf(amount));

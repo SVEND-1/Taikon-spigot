@@ -4,7 +4,6 @@ public enum BuildingType {
     BAKERY("Пекарня", "Bakery"),
     GARDEN("Сад", "Garden"),
     RESTAURANT("Ресторан","Restaurant")
-    // Другие типы зданий
     ;
 
     private final String displayName;

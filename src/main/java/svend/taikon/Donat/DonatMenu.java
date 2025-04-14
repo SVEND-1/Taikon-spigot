@@ -64,6 +64,24 @@ public class DonatMenu extends MenuManager {
                     case DIAMOND_BLOCK:
                         busterIncome.turnOnTheGlobalBooster();
                         break;
+                    case OAK_PLANKS:
+                        BusterResource.turnOnTheLocalBoosterWood(player);
+                        break;
+                    case STONE_SLAB:
+                        BusterResource.turnOnTheLocalBoosterStone(player);
+                        break;
+                    case RED_SAND:
+                        BusterResource.turnOnTheLocalBoosterSand(player);
+                        break;
+                    case OAK_LOG:
+                        BusterResource.turnOnTheGlobalBoosterWood();
+                        break;
+                    case STONE:
+                        BusterResource.turnOnTheGlobalBoosterStone();
+                        break;
+                    case SAND:
+                        BusterResource.turnOnTheGlobalBoosterSand();
+                        break;
                     case DIAMOND_AXE:
                     case DIAMOND_PICKAXE:
                     case DIAMOND_SHOVEL:
@@ -122,16 +140,34 @@ public class DonatMenu extends MenuManager {
         ItemStack fly = MenuUtils.createMenuItemWithLore(Material.FEATHER,"Полет","Цена: 100","Вы сможете летать по карте");
         ItemStack localBoost = MenuUtils.createMenuItemWithLore(Material.DIAMOND,"Локальный буст х2","Цена: 120","Время: 30мин");
         ItemStack globalBoost = MenuUtils.createMenuItemWithLore(Material.DIAMOND_BLOCK,"Глобальный буст х2","Цена: 120","Время: 30мин");
+
+        ItemStack localBoostWood = MenuUtils.createMenuItemWithLore(Material.OAK_PLANKS,"Локальный буст дерево х2","Цена: 120","Время: 30мин");
+        ItemStack localBoostStone = MenuUtils.createMenuItemWithLore(Material.STONE_SLAB,"Локальный буст камня х2","Цена: 120","Время: 30мин");
+        ItemStack localBoostSand = MenuUtils.createMenuItemWithLore(Material.RED_SAND,"Локальный буст песка х2","Цена: 120","Время: 30мин");
+
+        ItemStack globalBoostWood = MenuUtils.createMenuItemWithLore(Material.OAK_LOG,"Глобальный буст дерево х2","Цена: 120","Время: 30мин");
+        ItemStack globalBoostStone = MenuUtils.createMenuItemWithLore(Material.STONE,"Глобальный буст камня х2","Цена: 120","Время: 30мин");
+        ItemStack globalBoostSand = MenuUtils.createMenuItemWithLore(Material.SAND,"Глобальный буст песка х2","Цена: 120","Время: 30мин");
+
         ItemStack diamondAxe = MenuUtils.createMenuItemWithLore(Material.DIAMOND_AXE,"Алмазный топор","Цена: 150","Доход +4");
         ItemStack diamondPickaxe = MenuUtils.createMenuItemWithLore(Material.DIAMOND_PICKAXE,"Алмазная кирка","Цена: 150","Доход +4");
         ItemStack diamondShovel = MenuUtils.createMenuItemWithLore(Material.DIAMOND_SHOVEL,"Алмазная лопата","Цена: 150","Доход +4");
 
-        inventory.setItem(10,fly);
-        inventory.setItem(12,localBoost);
-        inventory.setItem(13,globalBoost);
-        inventory.setItem(14,diamondAxe);
-        inventory.setItem(15,diamondPickaxe);
-        inventory.setItem(16,diamondShovel);
+        inventory.setItem(9,fly);
+        inventory.setItem(11,localBoost);
+        inventory.setItem(12,globalBoost);
+
+        inventory.setItem(5,globalBoostWood);
+        inventory.setItem(14,globalBoostStone);
+        inventory.setItem(23,globalBoostSand);
+
+        inventory.setItem(6,localBoostWood);
+        inventory.setItem(15,localBoostStone);
+        inventory.setItem(24,localBoostSand);
+
+        inventory.setItem(8,diamondAxe);
+        inventory.setItem(17,diamondPickaxe);
+        inventory.setItem(26,diamondShovel);
     }
 
 

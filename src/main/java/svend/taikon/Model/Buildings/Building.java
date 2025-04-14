@@ -1,23 +1,32 @@
 package svend.taikon.Model.Buildings;
 
 import svend.taikon.LargeNumber;
+import svend.taikon.Menu.BuildingsMenu.Settings.ProductType;
+import svend.taikon.Menu.BuildingsMenu.Settings.ProductUpgrade;
 import svend.taikon.Model.Product;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
-public class Building {
+public abstract class Building {
+    protected Map<ProductType, ProductUpgrade> upgradeConfig = new HashMap<>();
     private String name;
     private LargeNumber price;
-    private LargeNumber upIncome;//На сколько будет увеличивать доход
+    private LargeNumber upIncome;
     private int level;
     private UUID userId;
     private Product firstProduct;
     private Product secondProduct;
     private boolean buildingsConstructed;
 
-    public Building() {}
+    public Building() {
+        initUpgradeConfig();
+    }
 
-    public Building(String name, LargeNumber price, LargeNumber upIncome, int level,Product firstProduct,Product secondProduct,boolean buildingsConstructed, UUID userId) {
+    public Building(String name, LargeNumber price, LargeNumber upIncome, int level,
+                    Product firstProduct, Product secondProduct,
+                    boolean buildingsConstructed, UUID userId) {
         this.name = name;
         this.price = price;
         this.upIncome = upIncome;
@@ -26,8 +35,18 @@ public class Building {
         this.secondProduct = secondProduct;
         this.buildingsConstructed = buildingsConstructed;
         this.userId = userId;
+        initUpgradeConfig();
     }
 
+    protected abstract void initUpgradeConfig();
+
+    public Map<ProductType, ProductUpgrade> getUpgradeConfig() {
+        return upgradeConfig;
+    }
+
+    public void setUpgradeConfig(Map<ProductType, ProductUpgrade> upgradeConfig) {
+        this.upgradeConfig = upgradeConfig;
+    }
     public String getName() {
         return name;
     }

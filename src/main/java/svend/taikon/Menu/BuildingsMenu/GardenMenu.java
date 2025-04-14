@@ -65,8 +65,7 @@ public class GardenMenu extends BuildingMenu<Garden> {
 
     @Override
     public void setMenuItems() {
-        MenuUtils.ItemProfitableBuildings(inventory);
-        // Здесь можно добавить специфичные для сада предметы в меню
+        MenuUtils.ItemProfitableBuildings(inventory,player,buildingDB,userDB);
     }
 
     @Override
