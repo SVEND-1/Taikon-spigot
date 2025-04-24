@@ -13,7 +13,7 @@ public class Garden extends Building {
     @Override
     protected void initUpgradeConfig() {
         upgradeConfig.put(ProductType.FIRST, new ProductUpgrade(
-                new ResourceCost(25, 0, 0),
+                new ResourceCost(25, 25, 0),
                 new LargeNumber("5000"),
                 new ResourceCost(125, 0, 0),
                 new LargeNumber("25000")

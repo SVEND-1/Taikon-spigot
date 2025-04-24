@@ -40,7 +40,7 @@ public class MenuUtils {
         );
 
         Product firstProduct = building.getFirstProduct();
-        ItemStack firstProductItem = createMenuItemWithLore(
+        ItemStack firstProductItem = createMenuItemWithLore(//TODO Не так отображает исправить
                 Material.OBSIDIAN,
                 "Улучшить " + firstProduct.getName() + " (Ур. " + (firstProduct.isOpen() ? firstProduct.getLvl() : "0") + ")",
                 "Цена: " + getUpgradePrice(building, firstProduct, true),

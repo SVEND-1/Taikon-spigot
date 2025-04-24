@@ -1,6 +1,7 @@
 package svend.taikon.Listener;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -61,7 +62,7 @@ public class PlayerJoinListener implements Listener {
         }
     }
     private void startSetting(Player player) {
-        //Todo:дать серивезованный инвентарь
+        player.teleport(new Location(player.getWorld(),120,99,140));
         player.setGameMode(GameMode.SURVIVAL);
         player.setInvulnerable(true);
         player.setFoodLevel(25);

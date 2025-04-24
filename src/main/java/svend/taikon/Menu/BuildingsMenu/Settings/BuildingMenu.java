@@ -54,11 +54,19 @@ public abstract class BuildingMenu<T extends Building> extends MenuManager {
     // Общие методы для всех зданий
     protected void handleUpIncome(User user, T building) {
         if (user.getBalance().leftOrEqual(building.getPrice())) {
-            if (building.getLevel() < 75) {
+            if (building.getLevel() < 100) {
                 user.setBalance(user.getBalance().subtract(building.getPrice()));
                 user.setIncome(user.getIncome().add(building.getUpIncome()));
 
-                LargeNumber upPrice = building.getPrice().divide(new LargeNumber("10"));
+                LargeNumber upPrice = building.getPrice().divide(//Изначальную цену делим на то что ниже и прибавляем к начальной цене
+                         building.getLevel() >= 10 ?  new LargeNumber("10") :
+                                 building.getLevel() > 10 && building.getLevel() <= 20 ? new LargeNumber("8") :
+                                         building.getLevel() > 20 && building.getLevel() <= 35 ? new LargeNumber("7") :
+                                                 building.getLevel() > 35 && building.getLevel() <= 50 ? new LargeNumber("6") :
+                                                         building.getLevel() > 50 && building.getLevel() <= 75 ? new LargeNumber("5") :
+                                                                 new LargeNumber("4")
+
+                );
                 building.setPrice(building.getPrice().add(upPrice));
                 building.setLevel(building.getLevel() + 1);
 
